@@ -14,29 +14,36 @@ class Config
      * Database host
      * @var string
      */
-    const DB_HOST = 'your-database-host';
+    const DB_HOST = 'localhost';
 
     /**
      * Database name
      * @var string
      */
-    const DB_NAME = 'your-database-name';
+    const DB_NAME = 'smartbudget';
 
     /**
      * Database user
      * @var string
      */
-    const DB_USER = 'your-database-user';
+    const DB_USER = 'admin';
 
     /**
      * Database password
      * @var string
      */
-    const DB_PASSWORD = 'your-database-password';
+    const DB_PASSWORD = '.KU1YR32LzZ5PsrI';
 
     /**
      * Show or hide error messages on screen
      * @var boolean
      */
     const SHOW_ERRORS = true;
+
+    /**
+     * Secret key for hashing
+     * @var boolean
+     */
+    const SECRET_KEY = '0QPLQw.VFDe@vwBy';
+
 }
