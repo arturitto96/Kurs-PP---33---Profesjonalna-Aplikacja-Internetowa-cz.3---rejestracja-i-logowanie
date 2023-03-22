@@ -1,0 +1,176 @@
+a {
+    text-decoration: none;
+}
+
+body {
+    color: white;
+    background-color: #144272;
+    font-family: "Open Sans";
+    height: 100%;
+    
+}
+
+h2, h3 {
+    margin: 3%;
+}
+
+/* NAVBAR SECTION */
+
+.navbar {
+    background-color: #0A2647;
+    border-bottom: 1px solid;
+}
+
+.navbar-img {
+    margin-right: 10px;
+}
+
+.navbar-brand {
+    color: white;
+}
+
+.navbar-brand:hover {
+    color: white;
+}
+
+.navbar-input {
+    margin-right: 10px;
+}
+
+.navbar-btn {
+    width: 100px;
+}
+
+.forgot-psswrd-btn {
+    margin-left: 10px;
+}
+
+.form-control {
+    width: 250px;
+}
+
+.side-navbar {
+    text-decoration: none;
+    padding-left: 0;
+}
+
+.side-left-middle-container {
+    display: inline-block;
+    width: 190px;
+    height: 100%;
+    background-color: #0A2647;
+    border-right: 1px solid white;
+    position: fixed;
+}
+
+.side-left-middle-container li {
+    /* Tag li which is in .side-left-middle-container */
+    display: block;
+    padding: 10px;
+    color: white;
+    text-align: left;
+    border-bottom: 1px solid white;
+}
+
+.side-left-middle-container li:hover {
+    /* Tag li which is in .side-left-middle-container */
+    color: #205295;
+}
+
+/* INDEX -> INFORMATION SECTION */
+
+.row {
+    margin: 3%;
+    text-align: center;
+}
+
+.information {
+    color: white;
+    display: block;
+    text-decoration: none;
+    margin: 3%;
+    border: 2px solid white;
+    height: 500px;
+}
+
+.information-img {
+    margin: auto;
+    margin: 3%;
+}
+
+.information-header {
+    text-align: left;
+}
+
+.information-list {
+    text-align: left;
+    margin: 3%;
+}
+
+.register-btn {
+    margin: 3%;
+}
+
+/* REGISTER -> REGISTER SECTION */
+
+.container-fluid {
+    text-align: center;
+}
+
+.my-input {
+    width: 300px;
+    margin: 10px auto;
+}
+
+.btn-submit {
+    margin: 5px auto;
+    width: 150px;
+}
+
+
+/* MAINMENU -> SUMMARY SECTION */
+
+.side-right-middle-container {
+    display: inline-block;
+    width: 90%;
+    height: 100%;
+    position: relative;
+    left: 190px;
+}
+
+.summary {
+    text-align: left;
+}
+
+.income-summary {
+    color: green;
+}
+
+.expence-summary {
+    color: red;
+}
+
+/* ADD INCOME */
+.comentary-input {
+    height: 72px;
+}
+
+/* FOOTER */
+
+.footer {
+    position: fixed;
+    height: 40px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #0A2647;
+    color: white;
+    text-align: center;
+    padding: 8px;
+    border-top: 1px solid white;
+ }
+
+/*Kolor nr 1 -> #2C74B3 */
+/* Kolor nr 2 -> #205295 */
+/* Kolor nr 3 -> #144272 */
+/* Kolor nr 4 -> #0A2647 */

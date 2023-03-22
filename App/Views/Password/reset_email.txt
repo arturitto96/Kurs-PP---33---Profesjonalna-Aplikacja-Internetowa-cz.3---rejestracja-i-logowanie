@@ -1,0 +1,5 @@
+Resetowanie hasła.
+
+<p>Aby zresetować hasło do swojego konta kliknij tutaj:
+
+{{ url }}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Resetowanie hasła{% endblock %}
+
+{% block header %}
+<!-- Navbar Section -->
+<section class="register">
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
+        </div>
+    </nav>
+</section>
+{% endblock %}
+
+{% block body %}
+<!-- Forgot Password Section -->
+<section id="data-steup">
+    <div class="container-fluid">
+        <form action="/password/request-reset" method="post">
+            <input name="email" type="email" class="form-control my-input" placeholder="e-mail" value="{{ user.email }}"
+                required>
+            <button class="btn btn-success btn-submit" type="submit">Wyślij</button>
+            <a href="/">
+                <button class="btn btn-danger btn-submit" type="button">Anuluj</button>
+            </a>
+        </form>
+        
+    </div>
+</section>
+
+{% endblock %}

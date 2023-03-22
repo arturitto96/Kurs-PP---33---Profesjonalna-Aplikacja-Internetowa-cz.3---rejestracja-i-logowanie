@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Rejestracja{% endblock %}
+
+{% block header %}
+<!-- Navbar Section -->
+<section class="register">
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
+        </div>
+    </nav>
+</section>
+{% endblock %}
+
+{% block body %}
+<!-- Signup Section -->
+<section id="data-steup">
+    <div class="container-fluid">
+        <form action="/signup/create" method="post" id="formSignup">
+            <input name="username" type="text" class="form-control my-input" placeholder="Imię" value="{{ user.name }}"
+                required>
+            <input name="email" type="email" class="form-control my-input" placeholder="e-mail" value="{{ user.email }}"
+                required>
+            <input name="password" type="password" class="form-control my-input" placeholder="Hasło" id="inputPassword"
+                required>
+            <button class="btn btn-success btn-submit" type="submit">Rejestracja</button>
+            <a href="/">
+                <button class="btn btn-danger btn-submit" type="button">Anuluj</button>
+            </a>
+        </form>
+        
+    </div>
+</section>
+
+{% if user.errors is not empty %}
+<p>Błędy:</p>
+<ul>
+    {% for error in user.errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

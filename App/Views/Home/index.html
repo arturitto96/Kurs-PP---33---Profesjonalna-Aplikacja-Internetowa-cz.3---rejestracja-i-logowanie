@@ -1,9 +1,69 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}smartBudget{% endblock %}
+
+{% block header %}
+
+    <!-- Navbar Section -->
+    <section class="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
+            <div>
+                <form action="/login/create" method="post" class="d-flex" >
+                    <input name="email" type="email" class="form-control navbar-input" placeholder="e-mail" value="{{ email }}">
+                    <input name="password" type="password" class="form-control navbar-input" placeholder="hasło">
+                    <button class="btn btn-outline-success navbar-btn" type="submit">Zaloguj</button>
+                    <a href="/password/forgot">
+                        <button class="btn btn-outline-light forgot-psswrd-btn" type="button">Zapomniałeś hasła?</button>
+                    </a>
+                </form>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
 
 {% block body %}
-
-    <h1>Welcome</h1>
-
+    <!-- Information Section -->
+    <section>
+        <div class="row">
+            <div class="col-lg-4">
+                <a class="information" href="https://businessinsider.com.pl/poradnik-finansowy/oszczedzanie/dlaczego-warto-oszczedzac-i-jak-skutecznie-ograniczyc-biezace-wydatki/nbb6z6s">
+                    <i class="fa-sharp fa-solid fa-piggy-bank fa-10x information-img"></i>
+                    <h3 class="information-header">Dlaczego warto oszczędzać pieniądze?</h3>
+                    <ul class="information-list">
+                        <li><h5>Uzyskasz poczucie bezpieczeństwa!</h5></li>
+                        <li><h5>Zapewnisz swoim dzieciom bezpieczną przyszłość!</h5></li>
+                    </ul>
+                </a>
+            </div>
+            <div class="col-lg-4">
+                <a class="information" href="https://businessinsider.com.pl/twoje-pieniadze/na-co-warto-wydawac-pieniadze/zln3qxz">
+                    <i class="fa-sharp fa-solid fa-plane-departure fa-10x information-img"></i>
+                    <h3 class="information-header">Na co przeznaczyć zaoszczędzone pieniądze?</h3>
+                    <ul class="information-list">
+                        <li><h5>Podróżuj!</h5></li>
+                        <li><h5>Rozwijaj swoje pasje!</h5></li>
+                        <li><h5>Inwestój w rozwój osobisty!</h5></li>
+                        <li><h5>Nie bój się chcieć!</h5></li>
+                    </ul>
+                </a>
+            </div>
+            <div class="col-lg-4">
+                <div class="information">
+                    <i class="fa-sharp fa-solid fa-user-tie fa-10x information-img"></i>
+                    <h3 class="information-header">Zarejestruj się za darmo i zrób to z nami!</h3>
+                    <ul class="information-list">
+                        <li><h5>Darmowa aplikacja!</h5></li>
+                        <li><h5>Intuicyjny interfejs!</h5></li>
+                        <li><h5>Łatwość w obsłudze!</h5></li>
+                        <li><h5>Wsparcie na całym świecie!</h5></li>
+                    </ul>
+                    <a href="/signup/new">
+                        <button class="btn btn-success register-btn" type="submit">Darmowa rejestracja</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}

@@ -1,0 +1,5 @@
+Aktywacja konta.
+
+<p>Dziękujemy, że jesteś z nami! Aby korzystać ze swojego konta aktywuj je:
+
+{{ url }}
