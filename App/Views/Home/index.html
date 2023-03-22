@@ -8,11 +8,16 @@
     <section class="navbar">
         <div class="container-fluid">
             <a class="navbar-brand"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
-            <form action="/login/create" method="post" class="d-flex" >
-                <input name="email" type="email" class="form-control navbar-input" placeholder="e-mail" value="{{ email }}">
-                <input name="password" type="password" class="form-control navbar-input" placeholder="hasło">
-                <button class="btn btn-outline-success navbar-btn" type="submit">Zaloguj</button>
-            </form>
+            <div>
+                <form action="/login/create" method="post" class="d-flex" >
+                    <input name="email" type="email" class="form-control navbar-input" placeholder="e-mail" value="{{ email }}">
+                    <input name="password" type="password" class="form-control navbar-input" placeholder="hasło">
+                    <button class="btn btn-outline-success navbar-btn" type="submit">Zaloguj</button>
+                    <a href="/password/forgot">
+                        <button class="btn btn-outline-light forgot-psswrd-btn" type="button">Zapomniałeś hasła?</button>
+                    </a>
+                </form>
+            </div>
         </div>
     </section>
 

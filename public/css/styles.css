@@ -41,6 +41,14 @@ h2, h3 {
     width: 100px;
 }
 
+.forgot-psswrd-btn {
+    margin-left: 10px;
+}
+
+.form-control {
+    width: 250px;
+}
+
 .side-navbar {
     text-decoration: none;
     padding-left: 0;

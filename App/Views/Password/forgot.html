@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Rejestracja{% endblock %}
+{% block title %}Resetowanie hasła{% endblock %}
 
 {% block header %}
 <!-- Navbar Section -->
@@ -14,17 +14,13 @@
 {% endblock %}
 
 {% block body %}
-<!-- Signup Section -->
+<!-- Forgot Password Section -->
 <section id="data-steup">
     <div class="container-fluid">
-        <form action="/signup/create" method="post" id="formSignup">
-            <input name="username" type="text" class="form-control my-input" placeholder="Imię" value="{{ user.name }}"
-                required>
+        <form action="/password/request-reset" method="post">
             <input name="email" type="email" class="form-control my-input" placeholder="e-mail" value="{{ user.email }}"
                 required>
-            <input name="password" type="password" class="form-control my-input" placeholder="Hasło" id="inputPassword"
-                required>
-            <button class="btn btn-success btn-submit" type="submit">Rejestracja</button>
+            <button class="btn btn-success btn-submit" type="submit">Wyślij</button>
             <a href="/">
                 <button class="btn btn-danger btn-submit" type="button">Anuluj</button>
             </a>
@@ -33,12 +29,4 @@
     </div>
 </section>
 
-{% if user.errors is not empty %}
-<p>Błędy:</p>
-<ul>
-    {% for error in user.errors %}
-    <li>{{ error }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
 {% endblock %}
