@@ -30,12 +30,12 @@ class Mail {
         $mail->CharSet = "UTF-8";
         $mail->Host = 'smtp.wp.pl';
         $mail->SMTPAuth = true;
-        $mail->Username = 'artur.staszewski.programista@wp.pl';
-        $mail->Password = 'SYgUc*A%zi,R4y2';
+        $mail->Username = Config::MAIL_ADDRESS;
+        $mail->Password = Config::MAIL_PASSWORD;
         $mail->SMTPSecure = 'ssl';
         $mail->Port = 465;
     
-        $mail->setFrom('artur.staszewski.programista@wp.pl');
+        $mail->setFrom(Config::MAIL_ADDRESS);
         $mail->addAddress($to);
     
         $mail->Subject = $subject;
