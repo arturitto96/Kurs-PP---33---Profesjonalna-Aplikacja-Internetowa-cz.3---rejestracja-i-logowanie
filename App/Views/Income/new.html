@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Rejestracja{% endblock %}
+
+{% block header %}
+<!-- Navbar Section -->
+<section class="register">
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
+        </div>
+    </nav>
+</section>
+{% endblock %}
+
+{% block body %}
+<!-- Signup Section -->
+<section id="data-setup">
+    <div class="container-fluid">
+            <form method="post" id="formNewIncome">
+                <input name="userId" type="hidden" value="{{ user.id }}" />
+                <input name="amount" type="number" class="form-control my-input" placeholder="Kwota" min="0" step="0.01" required>
+                <input name="date" type="date" class="form-control my-input" placeholder="Data" min="" required>
+                <select name="category" class="form-select my-input" required>
+                    <option selected>Kategoria</option>
+                    <option value="Wynagrodzenie">Wynagrodzenie</option>
+                    <option value="Odsetki bankowe">Odsetki bankowe</option>
+                    <option value="Sprzedaż na allegro">Sprzedaż na allegro</option>
+                    <option value="Inne">Inne</option>
+                </select>
+                <input name="comment" type="text" class="form-control my-input comentary-input" placeholder="Komentarz (opcjonalnie)">
+                <button class="btn btn-success btn-submit" type="submit">Dodaj</button>
+                <a href="/profile/show">
+                    <button class="btn btn-danger btn-submit" type="button">Anuluj</button>
+                </a>
+            </form>
+    </div>
+</section>
+
+{% if user.errors is not empty %}
+<p>Błędy:</p>
+<ul>
+    {% for error in user.errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}
