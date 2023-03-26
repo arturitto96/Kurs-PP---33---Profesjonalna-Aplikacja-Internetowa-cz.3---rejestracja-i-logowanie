@@ -1,7 +1,12 @@
-dane dost.txt
+*.sql
+*.md
 
-smartbudget.sql
-
+logs
 vendor
 
+App/Config.php
+
+LICENSE
 composer.lock
+dane dost.txt
+nginx-configuration.txt
