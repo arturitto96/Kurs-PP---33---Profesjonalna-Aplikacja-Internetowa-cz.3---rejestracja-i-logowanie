@@ -6,6 +6,8 @@ use PDO;
 use \App\Token;
 use \App\Mail;
 use \Core\View;
+use \App\Models\Income;
+use \App\Models\Expense;
 
 /**
  * User model
@@ -414,6 +416,8 @@ class User extends \Core\Model
         $token = new Token($value);
         $hashed_token = $token -> getHash();
 
+        static::copyDefaultCategories($hashed_token);
+
         $sql = 'UPDATE users
                 SET is_active = 1,
                     activation_hash = null
@@ -424,7 +428,7 @@ class User extends \Core\Model
 
         $stmt->bindValue(':hashed_token', $hashed_token, PDO::PARAM_STR);
 
-        $stmt->execute(); 
+        $stmt->execute();
     }
 
     /**
@@ -469,5 +473,39 @@ class User extends \Core\Model
             return $stmt -> execute();
         }
         return false;
+    }
+
+    /**
+     * Get user from data base by activation token
+     *
+     * @return mixed
+     */
+    protected static function getUserByActivationToken($hashed_token) {
+        $sql = 'SELECT * FROM users
+                WHERE activation_hash = :token_hash';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':token_hash', $hashed_token, PDO::PARAM_STR);
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
+
+    /**
+     * Copy the default categories for new user
+     *
+     * @return void
+     */
+    protected static function copyDefaultCategories($hashed_token) {
+        
+        $user = static::getUserByActivationToken($hashed_token);
+
+        Income::assignCategoriesToUser($user -> id);
+        Expense::assignCategoriesToUser($user -> id);
     }
 }
