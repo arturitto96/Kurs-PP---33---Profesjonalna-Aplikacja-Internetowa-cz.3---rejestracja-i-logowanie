@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Auth;
+use \App\Flash;
+use App\Models\Income;
 
 /**
  * Profile controller
@@ -12,7 +14,7 @@ use \App\Auth;
  */
 class Profile extends Authenticated {
 
-    public $user;
+    private $user;
     /**
      * Before filter - called before each action method
      * 
@@ -48,12 +50,39 @@ class Profile extends Authenticated {
      * @return void
      */
     public function updateAction() {
-        if ($this->user -> updateProfile($_POST)) {
-            Flash::assMessage('Changes saved');
+        if ($this -> user -> updateProfile($_POST)) {
+            Flash::addMessage('Zapisano zmiany');
 
             $this -> redirect('/profile/show');
         } else {
             View::renderTemplate('Profile/edit.html', ['user' => $this->user]);
         }
+    }
+
+    /**
+     * Show the new income page
+     *
+     * @return void
+     */
+    public function newIncomeAction() {
+        $this -> user -> getUserCategories();
+
+        $this -> user -> getTodayDate();
+
+        View::renderTemplate('Profile/newIncome.html', ['user' => $this -> user]);
+    }
+
+     /**
+     * Save the income data
+     *
+     * @return void
+     */
+    public function saveIncomeAction() {
+        Income::saveIncome($_POST);
+
+        Flash::addMessage('Pomyślnie dodano przychód');
+
+        $this -> redirect('/profile/show');
+
     }
 }

@@ -65,12 +65,22 @@ class User extends \Core\Model
 
     public $password_reset_token;
 
+    public $todayDate;
+
     /**
      * Error messages
      *
      * @var array
      */
     public $errors = [];
+
+    /**
+     * Incomes categories assigned to user
+     *
+     * @var array
+     */
+    public $incomesCategories = [];
+
 
     /**
      * Class constructor
@@ -507,5 +517,23 @@ class User extends \Core\Model
 
         Income::assignCategoriesToUser($user -> id);
         Expense::assignCategoriesToUser($user -> id);
+    }
+
+    /**
+     * Get the categories
+     * 
+     * @return void
+     */
+    public function getUserCategories() {
+        $this -> incomesCategories = Income::getUserCategories($this -> id);
+    }
+
+    /**
+     * Get the today date
+     *
+     * @return void
+     */
+    public function getTodayDate() {
+        $this -> todayDate = date("Y-m-d");
     }
 }
