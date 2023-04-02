@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Dodawanie przychodu{% endblock %}
+{% block title %}Dodawanie wydatku{% endblock %}
 
 {% block header %}
 <!-- Navbar Section -->
@@ -14,18 +14,28 @@
 {% endblock %}
 
 {% block body %}
-<!-- Setuo data for new income Section -->
+<!-- Setuo data for new expense Section -->
 <section id="data-setup">
     <div class="container-fluid">
-            <form action="/profile/saveIncome" method="post" id="formNewIncome">
+            <form action="/profile/saveExpense" method="post" id="formNewExpense">
                 <input name="userId" type="hidden" value="{{ user.id }}" />
                 <input name="amount" type="number" class="form-control my-input" placeholder="Kwota" min="0" step="0.01" required>
                 <input id="dateField" name="date" type="date" class="form-control my-input" placeholder="Data" min="2000-01-01" max="{{ user.todayDate }}" required>
-                <select name="category" class="form-select my-input" placeholder="Kategoria" required>
-                    {% if user.incomesCategories is not empty %}
-                            {% for categories in user.incomesCategories %}
+                <select name="category" class="form-select my-input" required>
+                    {% if user.expensesCategories is not empty %}
+                            {% for categories in user.expensesCategories %}
                                 {% for category in categories %}
                                 <option value='{{ category }}'>{{ category }}</option>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </select>
+                <select name="payment" class="form-select my-input" required>
+                    {% if user.paymentMethods is not empty %}
+                            {% for methods in user.paymentMethods %}
+                                {% for method in methods %}
+                                <option value='{{ method }}'>{{ method }}</option>
                                 {% endfor %}
                             {% endfor %}
                         </ul>
