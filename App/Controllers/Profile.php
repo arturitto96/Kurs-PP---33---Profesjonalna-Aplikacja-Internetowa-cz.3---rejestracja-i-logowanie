@@ -6,6 +6,7 @@ use \Core\View;
 use \App\Auth;
 use \App\Flash;
 use App\Models\Income;
+use App\Models\Expense;
 
 /**
  * Profile controller
@@ -24,6 +25,10 @@ class Profile extends Authenticated {
         parent::before();
 
         $this->user = Auth::getUser();
+
+        $this -> user -> getUserCategories();
+
+        $this -> user -> getTodayDate();
     }
     
     /**
@@ -65,10 +70,6 @@ class Profile extends Authenticated {
      * @return void
      */
     public function newIncomeAction() {
-        $this -> user -> getUserCategories();
-
-        $this -> user -> getTodayDate();
-
         View::renderTemplate('Profile/newIncome.html', ['user' => $this -> user]);
     }
 
@@ -81,6 +82,29 @@ class Profile extends Authenticated {
         Income::saveIncome($_POST);
 
         Flash::addMessage('Pomyślnie dodano przychód');
+
+        $this -> redirect('/profile/show');
+
+    }
+
+    /**
+     * Show the new expense page
+     *
+     * @return void
+     */
+    public function newExpenseAction() {
+        View::renderTemplate('Profile/newExpense.html', ['user' => $this -> user]);
+    }
+
+    /**
+     * Save the expense data
+     *
+     * @return void
+     */
+    public function saveExpenseAction() {
+        Expense::saveExpense($_POST);
+
+        Flash::addMessage('Pomyślnie dodano wydatek');
 
         $this -> redirect('/profile/show');
 

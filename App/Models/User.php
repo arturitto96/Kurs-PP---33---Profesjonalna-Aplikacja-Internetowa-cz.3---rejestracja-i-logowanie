@@ -67,6 +67,10 @@ class User extends \Core\Model
 
     public $todayDate;
 
+    public $expensesCategories;
+    
+    public $paymentMethods;
+
     /**
      * Error messages
      *
@@ -426,7 +430,7 @@ class User extends \Core\Model
         $token = new Token($value);
         $hashed_token = $token -> getHash();
 
-        static::copyDefaultCategories($hashed_token);
+        static::copyDefault($hashed_token);
 
         $sql = 'UPDATE users
                 SET is_active = 1,
@@ -511,12 +515,11 @@ class User extends \Core\Model
      *
      * @return void
      */
-    protected static function copyDefaultCategories($hashed_token) {
-        
+    protected static function copyDefault($hashed_token) {
         $user = static::getUserByActivationToken($hashed_token);
-
         Income::assignCategoriesToUser($user -> id);
         Expense::assignCategoriesToUser($user -> id);
+        Expense::assignPaymentToUser($user -> id);
     }
 
     /**
@@ -526,6 +529,8 @@ class User extends \Core\Model
      */
     public function getUserCategories() {
         $this -> incomesCategories = Income::getUserCategories($this -> id);
+        $this -> expensesCategories = Expense::getUserCategories($this -> id);
+        $this -> paymentMethods = Expense::getUserPayment($this -> id);
     }
 
     /**

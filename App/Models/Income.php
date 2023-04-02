@@ -57,7 +57,7 @@ class Income extends \Core\Model {
     /**
      * Get the ID of the choosen category
      *
-     * @return integer
+     * @return integer ID of category
      */
     public static function getCategoryID($userId, $categoryName) {
 
