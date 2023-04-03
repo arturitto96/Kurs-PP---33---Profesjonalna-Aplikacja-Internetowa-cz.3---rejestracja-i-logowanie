@@ -16,6 +16,7 @@ use App\Models\Expense;
 class Profile extends Authenticated {
 
     private $user;
+    private $incomeSummary;
     /**
      * Before filter - called before each action method
      * 
@@ -29,6 +30,8 @@ class Profile extends Authenticated {
         $this -> user -> getUserCategories();
 
         $this -> user -> getTodayDate();
+
+        $this -> user -> getSummary();
     }
     
     /**

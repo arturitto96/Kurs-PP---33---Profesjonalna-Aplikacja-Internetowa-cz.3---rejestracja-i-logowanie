@@ -164,4 +164,24 @@ class Expense extends \Core\Model {
 
         $stmt->execute();
     }
+
+    /**
+     * Get summary
+     *
+     * @return void
+     */
+    public static function getSummary($userId) {
+        $sql = 'SELECT SUM(expenses.amount) AS Summary
+		        FROM expenses
+		        WHERE user_id = :user_id'; 
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
+    }
 }

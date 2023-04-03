@@ -29,9 +29,13 @@
         <article>
         <div class="summary container-fluid" >
             <h2>Witaj, {{ user.username }}!</h2>
-            <h3>Twoje przychody w tym miesiącu : <span class="income-summary">0,00 zł</span></h3>
-            <h3>Twoje wydatki w tym miesiącu : <span class="expence-summary">0,00 zł</span></h3>
-            <h3>Różnica : <span class="income-summary">0,00 zł</span></h3>
+            <h3>Twoje przychody w tym miesiącu : <span class="income-summary">{{ user.incomeSummary }} PLN</span></h3>
+            <h3>Twoje wydatki w tym miesiącu : <span class="expence-summary">{{ user.expenseSummary }} PLN</span></h3>
+            <h3>Różnica : 
+                <span>
+                    {{user.incomeSummary-user.expenseSummary}} PLN
+                </span>
+            </h3>
         </div>
         </article>
     </section>

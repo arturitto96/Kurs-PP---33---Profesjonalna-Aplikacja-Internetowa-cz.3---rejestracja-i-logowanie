@@ -71,6 +71,10 @@ class User extends \Core\Model
     
     public $paymentMethods;
 
+    public $incomeSummary;
+
+    public $expenseSummary;
+
     /**
      * Error messages
      *
@@ -540,5 +544,15 @@ class User extends \Core\Model
      */
     public function getTodayDate() {
         $this -> todayDate = date("Y-m-d");
+    }
+
+    /**
+     * Get income and expense summary
+     *
+     * @return void
+     */
+    public function getSummary() {
+        $this -> incomeSummary = Income::getSummary($this -> id);
+        $this -> expenseSummary = Expense::getSummary($this -> id);
     }
 }
