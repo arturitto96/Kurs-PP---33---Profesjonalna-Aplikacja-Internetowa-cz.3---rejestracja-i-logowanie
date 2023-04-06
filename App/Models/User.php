@@ -567,5 +567,8 @@ class User extends \Core\Model
     public function getFullSummary($startDate, $endDate) {
         $this -> incomeFullSummary = Income::getFullSummary($this -> id, $startDate, $endDate);
         $this -> expenseFullSummary = Expense::getFullSummary($this -> id, $startDate, $endDate);
+
+        $this -> expenseFullSummary = json_encode($this -> expenseFullSummary, JSON_NUMERIC_CHECK);
+        $this -> expenseFullSummary = json_decode($this -> expenseFullSummary, true);
     }
 }

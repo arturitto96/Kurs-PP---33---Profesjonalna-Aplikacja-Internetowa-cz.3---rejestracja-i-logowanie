@@ -133,19 +133,14 @@ class Profile extends Authenticated {
             $this -> user -> getFullSummary($this -> firstDate, $this -> todayDate);
             View::RenderTemplate('Profile/balanceSheet.html', [ 'user' => $this -> user, 
                                                                 'start' => $this -> firstDate, 
-                                                                'end' => $this -> todayDate]);
+                                                                'end' => $this -> todayDate,
+                                                                'today' => $this -> todayDate]);
         } else {
-            $this -> user -> getFullSummary($_POST['startDate'], $_POST['endDate']);
-
-            $this -> user -> expenseFullSummary = json_encode($this -> user -> expenseFullSummary, JSON_NUMERIC_CHECK);
-
-            $this -> user -> expenseFullSummary = json_decode($this -> user -> expenseFullSummary, true);
-
-            //var_dump($this -> user -> expenseFullSummary);
-            
+            $this -> user -> getFullSummary($_POST['startDate'], $_POST['endDate']);    
             View::RenderTemplate('Profile/balanceSheet.html', [ 'user' => $this -> user, 
                                                                 'start' => $_POST['startDate'], 
-                                                                'end' => $_POST['endDate']]);
+                                                                'end' => $_POST['endDate'],
+                                                                'today' => $this -> todayDate]);
         }
     }
 
