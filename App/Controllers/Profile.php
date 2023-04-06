@@ -16,7 +16,19 @@ use App\Models\Expense;
 class Profile extends Authenticated {
 
     private $user;
+
     private $incomeSummary;
+
+    private $expenceSummary;
+
+    private $todayDate;
+
+    private $firstDate;
+
+    private $startDateForSummary;
+
+    private $endDateForSummary;
+        
     /**
      * Before filter - called before each action method
      * 
@@ -25,13 +37,11 @@ class Profile extends Authenticated {
     public function before() {
         parent::before();
 
-        $this->user = Auth::getUser();
-
+        $this -> getTodayDate();
+        $this -> getFirstDateOfThisMonth();
+        $this -> user = Auth::getUser();
         $this -> user -> getUserCategories();
-
-        $this -> user -> getTodayDate();
-
-        $this -> user -> getSummary();
+        $this -> user -> getShortSummary($this -> firstDate, $this -> todayDate);
     }
     
     /**
@@ -73,7 +83,7 @@ class Profile extends Authenticated {
      * @return void
      */
     public function newIncomeAction() {
-        View::renderTemplate('Profile/newIncome.html', ['user' => $this -> user]);
+        View::renderTemplate('Profile/newIncome.html', ['user' => $this -> user, 'today' => $this -> todayDate]);
     }
 
      /**
@@ -96,7 +106,7 @@ class Profile extends Authenticated {
      * @return void
      */
     public function newExpenseAction() {
-        View::renderTemplate('Profile/newExpense.html', ['user' => $this -> user]);
+        View::renderTemplate('Profile/newExpense.html', ['user' => $this -> user, 'today' => $this -> todayDate]);
     }
 
     /**
@@ -111,5 +121,49 @@ class Profile extends Authenticated {
 
         $this -> redirect('/profile/show');
 
+    }
+
+    /**
+     * Show the balance sheet
+     *
+     * @return void
+     */
+    public function showBalanceSheetAction() {
+        if (empty($_POST)) {
+            $this -> user -> getFullSummary($this -> firstDate, $this -> todayDate);
+            View::RenderTemplate('Profile/balanceSheet.html', [ 'user' => $this -> user, 
+                                                                'start' => $this -> firstDate, 
+                                                                'end' => $this -> todayDate]);
+        } else {
+            $this -> user -> getFullSummary($_POST['startDate'], $_POST['endDate']);
+
+            $this -> user -> expenseFullSummary = json_encode($this -> user -> expenseFullSummary, JSON_NUMERIC_CHECK);
+
+            $this -> user -> expenseFullSummary = json_decode($this -> user -> expenseFullSummary, true);
+
+            //var_dump($this -> user -> expenseFullSummary);
+            
+            View::RenderTemplate('Profile/balanceSheet.html', [ 'user' => $this -> user, 
+                                                                'start' => $_POST['startDate'], 
+                                                                'end' => $_POST['endDate']]);
+        }
+    }
+
+    /**
+     * Get the today date
+     *
+     * @return void
+     */
+    protected function getTodayDate() {
+        $this -> todayDate = date("Y-m-d");
+    }
+
+    /**
+     * Get the date of first day of this month
+     *
+     * @return void
+     */
+    protected function getFirstDateOfThisMonth() {
+        $this -> firstDate = date('Y') . '-' . date('m') . '-01';
     }
 }

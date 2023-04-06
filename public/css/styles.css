@@ -10,6 +10,10 @@ body {
     
 }
 
+h1 {
+    text-align: center;
+}
+
 h2, h3 {
     margin: 3%;
 }
@@ -90,6 +94,7 @@ h2, h3 {
     text-decoration: none;
     margin: 3%;
     border: 2px solid white;
+    border-radius: 10px;
     height: 500px;
 }
 
@@ -132,7 +137,7 @@ h2, h3 {
 
 .side-right-middle-container {
     display: inline-block;
-    width: 90%;
+    width: 60%;
     height: 100%;
     position: relative;
     left: 190px;
@@ -153,6 +158,21 @@ h2, h3 {
 /* ADD INCOME */
 .comentary-input {
     height: 72px;
+}
+
+/* BALANCE SHEET */
+
+.sheet {
+    color: white;
+    display: block;
+    text-decoration: none;
+    margin: 3%;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+.chart {
+    margin: 3% auto;
 }
 
 /* FOOTER */

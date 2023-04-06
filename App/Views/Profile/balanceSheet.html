@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block title %}Bilans{% endblock %}
+
+{% block graph %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Kategoria', 'Wartość']
+            {% if user.expenseFullSummary is not empty %}
+                {% for single in user.expenseFullSummary %}
+                    {% for value in single %}
+                        {% if loop.index == 1 %}
+                            ,['{{ value }}',
+                        {% else %}
+                            {{ value }}]
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+        ]);
+
+        var options = {
+          title: 'Wykres kołowy dokonanych wydatków w podanym okresie',
+          pieHole: 0.5,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+      }
+</script>
+{% endblock %}
+
+{% block header %}
+<!-- Navbar Section -->
+<section class="register">
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
+            <button class="btn btn-outline-light" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Zmień okres</button>
+        </div>
+    </nav>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5 text-dark bg-white" id="exampleModalLabel">Zmiana okresu dla bilansu</h1>
+            </div>
+                <form action="/profile/showBalanceSheet" method="post">
+                    <div class="modal-body">
+                            <p class="text-dark bg-white">Data początkowa okresu:</p>
+                            <input id="startDate" name="startDate" type="date" class="form-control my-input" min="2000-01-01" max="{{ end }}" value="{{ start }}" required>
+                            <p class="text-dark bg-white">Data końcowa okresu:</p>
+                            <input id="endDate" name="endDate" type="date" class="form-control my-input" min="2000-01-01" max="{{ today }}" value="{{ end }}" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Zapisz zmiany</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Zamknij</button>
+                    </div>
+                </form>
+          </div>
+        </div>
+      </div>
+</section>
+{% endblock %}
+
+{% block body %}
+<!-- Preview of current balance sheet section -->
+<section id="balanceSheet">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>Bilans z okresu od: {{ start }}, do: {{ end }}</h1>
+        </div>
+        <div class="col-lg-6">
+            <div class="sheet">
+                <h2>Zestawienie przychodów</h2>
+                <table class="table text-white">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Kategoria</th>
+                        <th scope="col">Suma przychodów</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% if user.incomeFullSummary is not empty %}
+                            {% for single in user.incomeFullSummary %}
+                            <tr>
+                                <th scope="row">{{ loop.index }}</th>
+                                {% for value in single %}
+                                    {% if loop.index == 1 %}
+                                        <td>{{ value }}</td>
+                                    {% else %}
+                                        <td>{{ value }} PLN</td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <th scope="row">1</th>
+                            <td>Brak przychodów w podanym okresie</td>
+                            <td>0 PLN</td>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="sheet">
+                <h2>Zestawienie wydatków</h2>
+                <table class="table text-white">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Kategoria</th>
+                        <th scope="col">Suma wydatków</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% if user.expenseFullSummary is not empty %}
+                            {% for single in user.expenseFullSummary %}
+                            <tr>
+                                <th scope="row">{{ loop.index }}</th>
+                                {% for value in single %}
+                                    {% if loop.index == 1 %}
+                                        <td>{{ value }}</td>
+                                    {% else %}
+                                        <td>{{ value }} PLN</td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <th scope="row">1</th>
+                            <td>Brak wydatków w podanym okresie</td>
+                            <td>0 PLN</td>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="sheet">
+                <h2>Zestawienie przychodów</h2>
+                <div id="donutchart" class="chart" style="width: 50%; height: 500px;"></div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
