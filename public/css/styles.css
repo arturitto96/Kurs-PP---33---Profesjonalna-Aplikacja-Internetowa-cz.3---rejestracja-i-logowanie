@@ -173,21 +173,19 @@ h2, h3 {
 
 .chart {
     margin: 3% auto;
+    height: 500px;
 }
 
 /* FOOTER */
 
 .footer {
-    position: fixed;
     height: 40px;
     left: 0;
-    bottom: 0;
     width: 100%;
     background-color: #0A2647;
     color: white;
     text-align: center;
     padding: 8px;
-    border-top: 1px solid white;
  }
 
 /*Kolor nr 1 -> #2C74B3 */
