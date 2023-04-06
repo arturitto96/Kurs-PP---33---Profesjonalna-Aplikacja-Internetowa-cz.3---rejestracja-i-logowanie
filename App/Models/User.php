@@ -65,12 +65,6 @@ class User extends \Core\Model
 
     public $password_reset_token;
 
-    public $todayDate;
-
-    public $expensesCategories;
-    
-    public $paymentMethods;
-
     /**
      * Error messages
      *
@@ -84,6 +78,28 @@ class User extends \Core\Model
      * @var array
      */
     public $incomesCategories = [];
+
+    /**
+     * Expenses categories assigned to user
+     *
+     * @var array
+     */
+    public $expensesCategories = [];
+    
+    /**
+     * Payment methods assigned to user
+     *
+     * @var array
+     */
+    public $paymentMethods = [];
+
+    public $incomeSummary;
+
+    public $expenseSummary;
+
+    public $incomeFullSummary = [];
+
+    public $expenseFullSummary = [];
 
 
     /**
@@ -534,11 +550,22 @@ class User extends \Core\Model
     }
 
     /**
-     * Get the today date
+     * Get income and expense summary
      *
      * @return void
      */
-    public function getTodayDate() {
-        $this -> todayDate = date("Y-m-d");
+    public function getShortSummary($startDate, $endDate) {
+        $this -> incomeSummary = Income::getShortSummary($this -> id, $startDate, $endDate);
+        $this -> expenseSummary = Expense::getShortSummary($this -> id, $startDate, $endDate);
+    }
+
+    /**
+     * Get income and expense summary
+     *
+     * @return void
+     */
+    public function getFullSummary($startDate, $endDate) {
+        $this -> incomeFullSummary = Income::getFullSummary($this -> id, $startDate, $endDate);
+        $this -> expenseFullSummary = Expense::getFullSummary($this -> id, $startDate, $endDate);
     }
 }
