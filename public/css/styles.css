@@ -2,6 +2,10 @@ a {
     text-decoration: none;
 }
 
+p {
+    margin: auto;
+}
+
 body {
     color: white;
     background-color: #144272;
@@ -174,6 +178,47 @@ h2, h3 {
 .chart {
     margin: 3% auto;
     height: 500px;
+}
+
+/* SETUP SECTION */
+
+.dropdown-menu {
+    background-color: #0A2647;
+    width: 100%;
+}
+
+.show {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+}
+
+.dropdown-menu li {
+    /* Tag li which is in .dropdown-menu */
+    display: block;
+    padding: 10px;
+    color: white;
+    text-align: left;
+    border-bottom: 1px solid white;
+}
+
+.dropdown-menu a {
+    padding: 0;
+}
+
+.dropdown-menu li:hover {
+    color: #205295;
+    background-color: #0A2647;
+}
+.dropdown-menu a:hover {
+    background-color: #0A2647;
+}
+
+/* SETUP */
+
+.btn-delete {
+    margin: 5px auto;
+    width: 300px;
 }
 
 /* FOOTER */

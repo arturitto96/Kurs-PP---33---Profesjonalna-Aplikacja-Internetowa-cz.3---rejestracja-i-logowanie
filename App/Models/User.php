@@ -155,7 +155,7 @@ class User extends \Core\Model
      *
      * @return void
      */
-    public function validate()
+    public function validate($update = false)
     {
         // Name
         if ($this->username == '') {
@@ -171,7 +171,7 @@ class User extends \Core\Model
         }
 
         // Password
-        if (isset($this->password)) {
+        if ($update == false || $this -> password != '') {
             if (strlen($this->password) < 6) {
                 $this->errors[] = 'Hasło musi zawierać przynajmniej 6 znaków';
             }
@@ -469,20 +469,21 @@ class User extends \Core\Model
      * @return boolean True if the data was updated, false otherwise
      */
     public function updateProfile($data) {
-        $this -> username = $data['username'];
-        $this -> email = $data['email'];
-        
-        //Only validate and update the password if a value provided
-        if ($data['password'] != '') {
-            $this -> password = $data['password'];
+        $this -> username = $data['newUserName'];
+        $this -> email = $data['newEmail'];
+
+        if ($data['newPassword'] != '') {
+            $this -> password = $data['newPassword'];
         }
-        $this -> validate();
+
+        $this -> validate(true);
 
         if(empty($this -> errors)) {
             $sql = 'UPDATE users
-                    SET username = :username,
-                        email = :email';
-            if (isset($this->password)) {
+                     SET username = :username,
+                         email = :email';
+
+            if ($this->password != '') {
                 $sql .= ', password_hash = :password_hash';
             }
                         
@@ -495,14 +496,44 @@ class User extends \Core\Model
             $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
             $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
 
-            if (isset($this -> password)) {
-                $password_hash = password_hash($this -> password, PASSWORD_DEFAULT);
-                $stmt->bindValue(':password_hash', $this->password_hash, PDO::PARAM_STR);
+            if ($this -> password != '') {
+                $this -> password_hash = password_hash($this -> password, PASSWORD_DEFAULT);
+                $stmt->bindValue(':password_hash', $this -> password_hash, PDO::PARAM_STR);
             }
 
             return $stmt -> execute();
         }
         return false;
+    }
+
+    /**
+     * Delete the user profile
+     * 
+     *
+     * @return void
+     */
+    public function deleteProfile() {
+        $sql = 'DELETE FROM users 
+                WHERE users.id = :user_id;
+                DELETE FROM remembered_logins
+                WHERE remembered_logins.user_id = :user_id;
+                DELETE FROM incomes
+                WHERE incomes.user_id = :user_id;
+                DELETE FROM incomes_category_assigned_to_users 
+                WHERE incomes_category_assigned_to_users.user_id = :user_id;
+                DELETE FROM expenses
+                WHERE expenses.user_id = :user_id;
+                DELETE FROM expenses_category_assigned_to_users
+                WHERE expenses_category_assigned_to_users.user_id = :user_id;
+                DELETE FROM payment_methods_assigned_to_users
+                WHERE payment_methods_assigned_to_users.user_id = :user_id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $this -> id, PDO::PARAM_INT);
+
+        $stmt->execute();
     }
 
     /**

@@ -54,26 +54,40 @@ class Profile extends Authenticated {
     }
 
     /**
-     * Show the form for editing the profile
+     * Show the form for editing the user data
      * 
      * @return void
      */
-    public function editAction() {
-        View::renderTemplate('Profile/edit.html', ['user' => $this->user]);
+    public function editUserAction() {
+        View::renderTemplate('Profile/editUser.html', ['user' => $this->user]);
     }
 
     /**
-     * Update the profile
+     * Update the user data
      * 
      * @return void
      */
-    public function updateAction() {
+    public function updateUserAction() {
+        
         if ($this -> user -> updateProfile($_POST)) {
             Flash::addMessage('Zapisano zmiany');
-
             $this -> redirect('/profile/show');
         } else {
-            View::renderTemplate('Profile/edit.html', ['user' => $this->user]);
+            View::renderTemplate('Profile/editUser.html', ['user' => $this->user]);
+        }
+    }
+
+    /**
+     * Delete the user data
+     * 
+     * @return void
+     */
+    public function deleteUserAction() {
+        if (isset($_POST['deleteConfirmation'])) {
+            $this -> user -> deleteProfile();
+            $this -> redirect('/logout');
+        } else {
+            View::renderTemplate('Profile/editUser.html', ['user' => $this->user]);
         }
     }
 
@@ -161,4 +175,179 @@ class Profile extends Authenticated {
     protected function getFirstDateOfThisMonth() {
         $this -> firstDate = date('Y') . '-' . date('m') . '-01';
     }
+
+    /**
+     * Show the form for editing the user incomes categories
+     * 
+     * @return void
+     */
+    public function editIncomesCategoryAction() {
+        View::renderTemplate('Profile/editIncomes.html', ['user' => $this -> user]);
+    }
+
+
+    /**
+     * Show the form for editing the user expenses categories
+     * 
+     * @return void
+     */
+    public function editExpensesCategoryAction() {
+        View::renderTemplate('Profile/editExpenses.html', ['user' => $this -> user]);
+    }
+
+    /**
+     * Show the form for editing the user payment methods
+     * 
+     * @return void
+     */
+    public function editPaymentMethodsAction() {
+        View::renderTemplate('Profile/editPayment.html', ['user' => $this -> user]);
+    }
+    
+    /**
+     * Save new name for selected category
+     * 
+     * @return void
+     */
+    public function saveNewCategoryNameAction() {
+        if ($_POST['type'] == 'income') {
+            if (Income::editCategoryName($_POST, $this -> user -> id)) {
+                Flash::addMessage('Pomyślnie zapisano zmianę nazwy kategorii');
+                $this -> redirect('/profile/editIncomesCategory');
+            } else {
+                Flash::addMessage('Nie udało się zapisać zmiany', FLASH::WARNING);
+                $this -> redirect('/profile/editIncomesCategory');
+            }
+        } else if ($_POST['type'] == 'expense') {
+            if (Expense::editCategoryName($_POST, $this -> user -> id)) {
+                Flash::addMessage('Pomyślnie zapisano zmianę nazwy kategorii');
+                $this -> redirect('/profile/editExpensesCategory');
+            } else {
+                Flash::addMessage('Nie udało się zapisać zmiany', FLASH::WARNING);
+                $this -> redirect('/profile/editExpensesCategory');
+            }
+        } else {
+            Flash::addMessage('Coś poszło nie tak');
+            $this -> redirect('/profile/show');
+        }
+    }
+
+    /**
+     * Save new name for selected payment method
+     * 
+     * @return void
+     */
+    public function saveNewPaymentNameAction() {
+        if ($_POST['type'] == 'payment') {
+            if (Expense::editPaymentName($_POST, $this -> user -> id)) {
+                Flash::addMessage('Pomyślnie zapisano zmianę nazwy metody płatności');
+                $this -> redirect('/profile/editPaymentMethods');
+            } else {
+                Flash::addMessage('Nie udało się zapisać zmiany', FLASH::WARNING);
+                $this -> redirect('/profile/editPaymentMethods');
+            }
+        } else {
+            Flash::addMessage('Coś poszło nie tak', FLASH::WARNING);
+            $this -> redirect('/profile/show');
+        }
+    }
+
+     /**
+     * Delete selected category
+     * 
+     * @return void
+     */
+    public function deleteCategoryAction() {
+        if ($_POST['type'] == 'income') {
+            if (Income::deleteCategory($_POST, $this -> user -> id)) {
+                Flash::addMessage('Pomyślnie usunięto kategorię');
+                $this -> redirect('/profile/editIncomesCategory');
+            } else {
+                Flash::addMessage('Nie udało się usunąć wybranej kategorii', FLASH::WARNING);
+                $this -> redirect('/profile/editIncomesCategory');
+            }
+            
+        } else if ($_POST['type'] == 'expense') {
+            if (Expense::deleteCategory($_POST, $this -> user -> id)) {
+                Flash::addMessage('Pomyślnie usunięto kategorię');
+                $this -> redirect('/profile/editExpensesCategory');
+            } else {
+                Flash::addMessage('Nie udało się usunąć wybranej kategorii', FLASH::WARNING);
+                $this -> redirect('/profile/editExpensesCategory');
+            }
+        } else {
+            Flash::addMessage('Coś poszło nie tak', FLASH::WARNING);
+            $this -> redirect('/profile/show');
+        }
+    }
+
+    /**
+     * Delete selected payment method
+     * 
+     * @return void
+     */
+    public function deletePaymentAction() {
+        if ($_POST['type'] == 'payment') {
+            if (Expense::deletePayment($_POST, $this -> user -> id)) {
+                Flash::addMessage('Pomyślnie usunięto metodę płatności');
+                $this -> redirect('/profile/editPaymentMethods');
+            } else {
+                Flash::addMessage('Nie udało się usunąć wybranej kategorii', FLASH::WARNING);
+                $this -> redirect('/profile/editPaymentMethods');
+            }
+        } else {
+            Flash::addMessage('Coś poszło nie tak', FLASH::WARNING);
+            $this -> redirect('/profile/show');
+        }
+    }
+
+    /**
+     * Save new category
+     * 
+     * @return void
+     */
+    public function saveNewCategoryAction() {
+        if ($_POST['type'] == 'income') {
+            if (Income::saveNewCategory($_POST, $this -> user -> id)) {
+                Flash::addMessage('Pomyślnie zapisano nową kategorię');
+                $this -> redirect('/profile/editIncomesCategory');
+            } else {
+                Flash::addMessage('Nie udało się zapisać zmian', FLASH::WARNING);
+                $this -> redirect('/profile/editIncomesCategory');
+            }
+        } else if ($_POST['type'] == 'expense') {
+            if (Expense::saveNewCategory($_POST, $this -> user -> id)) {
+                Flash::addMessage('Pomyślnie zapisano nową kategorię');
+                $this -> redirect('/profile/editExpensesCategory');
+            } else {
+                Flash::addMessage('Nie udało się zapisać zmian', FLASH::WARNING);
+                $this -> redirect('/profile/editExpensesCategory');
+            }
+        } else {
+            Flash::addMessage('Coś poszło nie tak', FLASH::WARNING);
+            $this -> redirect('/profile/show');
+        }
+    }
+
+    /**
+     * Save new payment method
+     * 
+     * @return void
+     */
+    public function saveNewPaymentAction() {
+        if ($_POST['type'] == 'payment') {
+            if (Expense::saveNewPayment($_POST, $this -> user -> id)) {
+                Flash::addMessage('Pomyślnie zapisano nową metodę płatności');
+                $this -> redirect('/profile/editPaymentMethods');
+            } else {
+                Flash::addMessage('Nie udało się zapisać zmian', FLASH::WARNING);
+                $this -> redirect('/profile/editPaymentMethods');
+            }
+        } else {
+            Flash::addMessage('Coś poszło nie tak', FLASH::WARNING);
+            $this -> redirect('/profile/show');
+        }
+    }
 }
+
+    
