@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <a class="navbar-brand"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
             {% for message in flash_messages %}
-                <p class="text-{{ message.type }}">{{ message.body }}</p>
+                <p class="text-{{ message.type }} border border-{{ message.type }} flash">{{ message.body }}</p>
             {% endfor %}
             <a href="/logout">
                 <button class="btn btn-outline-danger navbar-btn" type="submit">Wyloguj</button>
@@ -32,7 +32,7 @@
                     <a class="dropdown-item" href="/profile/editPaymentMethods"><li><i class="fa-solid fa-money-bills"></i> Płatności</li></a>
                     <a class="dropdown-item" href="/profile/editUser"><li><i class="fa-solid fa-user-gear"></i> Dane użytkownika</li></a>
                 </ul>
-              </div>
+            </div>
         </ul>
         </nav>
     </section>
@@ -42,10 +42,12 @@
             <h2>Witaj, {{ user.username }}!</h2>
             <h3>Twoje przychody w tym miesiącu : <span class="income-summary">{{ user.incomeSummary }} PLN</span></h3>
             <h3>Twoje wydatki w tym miesiącu : <span class="expence-summary">{{ user.expenseSummary }} PLN</span></h3>
-            <h3>Różnica : 
-                <span>
-                    {{user.incomeSummary-user.expenseSummary}} PLN
-                </span>
+            <h3>Bilans : 
+                {% if (user.incomeSummary-user.expenseSummary) > 0 %}
+                    <span class="income-summary">{{user.incomeSummary-user.expenseSummary}} PLN</span> 
+                {% else %}
+                    <span class="expense-summary">{{user.incomeSummary-user.expenseSummary}} PLN</span>
+                {% endif %}
             </h3>
         </div>
         </article>
