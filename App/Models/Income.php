@@ -182,6 +182,9 @@ class Income extends \Core\Model {
      * @return boolean True when delete successfull, false otherwise 
      */
     public static function deleteCategory($data, $userId) { 
+        $deleteCategoryId = static::getCategoryID($userId, $data['deleteCategory']);
+        $newCategoryId = static::getCategoryID($userId, $data['newCategory']);
+        
         $sql = 'DELETE FROM incomes_category_assigned_to_users
                 WHERE name = :category_name AND
                 user_id = :user_id';
@@ -192,8 +195,37 @@ class Income extends \Core\Model {
         $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
         $stmt->bindValue(':category_name', $data['deleteCategory'], PDO::PARAM_STR);
 
-        return $stmt->execute();
+        $result = $stmt -> execute();
+
+        if ($deleteCategoryId == $newCategoryId) {
+            static::updateIncomeCategory($userId, $deleteCategoryId, 0);
+        } else {
+            static::updateIncomeCategory($userId, $deleteCategoryId, $newCategoryId);
+        }
+
+        return $result;
     }
+
+     /**
+     * Update income with deleted category
+     * 
+     * @return void
+     */
+    public static function updateIncomeCategory($userId, $deletedCategoryId, $newCategoryId) {
+        $sql = 'UPDATE incomes
+                SET income_category_assigned_to_user_id = :new_category
+                WHERE incomes.income_category_assigned_to_user_id = :delete_category AND
+                incomes.user_id = :user_id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':delete_category', $deletedCategoryId, PDO::PARAM_INT);
+        $stmt->bindValue(':new_category', $newCategoryId, PDO::PARAM_INT);
+
+        $stmt->execute();
+    } 
 
     /**
      * Save new category

@@ -9,7 +9,7 @@
         <div class="container-fluid">
             <a class="navbar-brand"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
             {% for message in flash_messages %}
-                <p class="text-{{ message.type }}">{{ message.body }}</p>
+                <p class="text-{{ message.type }} border border-{{ message.type }} flash">{{ message.body }}</p>
             {% endfor %}
         </div>
     </nav>
@@ -19,22 +19,23 @@
 {% block body %}
 <!-- Setup data for edit Section -->
 <section id="data-setup">
-    <div class="container-fluid">    
-        <div class="row">
-            <div class="col-lg-12">
-                <button class="btn btn-outline-light btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#newModal">Nowa kategoria</button>
-            </div>
-            <div class="col-lg-12">
-                <button class="btn btn-outline-light btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#editModal">Edytuj kategorię</button>
-            </div>
-            <div class="col-lg-12">
-                <button class="btn btn-outline-light btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal">Usuń kategorię</button>
-            </div>
-            <div class="col-lg-12">
-                <a href="/profile/show">
-                    <button class="btn btn-danger btn-delete" type="button">Powrót</button>
-                </a>
-            </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Edycja kategorii przychodów</h2>
+        </div>
+        <div class="col-lg-12">
+            <button class="btn btn-outline-light btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#newModal">Nowa kategoria</button>
+        </div>
+        <div class="col-lg-12">
+            <button class="btn btn-outline-light btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#editModal">Edytuj kategorię</button>
+        </div>
+        <div class="col-lg-12">
+            <button class="btn btn-outline-light btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal">Usuń kategorię</button>
+        </div>
+        <div class="col-lg-12">
+            <a href="/profile/show">
+                <button class="btn btn-danger btn-delete" type="button">Powrót</button>
+            </a>
         </div>
     </div>
 </section>
@@ -106,6 +107,17 @@
                     <input name="type" type="hidden" value="income" />
                     <p class="text-dark bg-white">Wybierz nazwę kategorii, którą chcesz usunąć:</p>
                     <select name="deleteCategory" class="form-select my-input" placeholder="Kategoria" required>
+                        {% if user.incomesCategories is not empty %}
+                                {% for categories in user.incomesCategories %}
+                                    {% for category in categories %}
+                                        <option value='{{ category }}'>{{ category }}</option>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </select>
+                    <p class="text-dark bg-white">Wybierz nazwę kategorii, którą przypisać do już dodanych przychodów:</p>
+                    <select name="newCategory" class="form-select my-input" placeholder="Kategoria" required>
                         {% if user.incomesCategories is not empty %}
                                 {% for categories in user.incomesCategories %}
                                     {% for category in categories %}

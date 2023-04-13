@@ -267,6 +267,9 @@ class Expense extends \Core\Model {
      * @return boolean True when delete successfull, false otherwise 
      */
     public static function deleteCategory($data, $userId) {
+        $deleteCategoryId = static::getCategoryID($userId, $data['deleteCategory']);
+        $newCategoryId = static::getCategoryID($userId, $data['newCategory']);
+        
         $sql = 'DELETE FROM expenses_category_assigned_to_users
                 WHERE name = :category_name AND
                 user_id = :user_id';
@@ -277,8 +280,39 @@ class Expense extends \Core\Model {
         $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
         $stmt->bindValue(':category_name', $data['deleteCategory'], PDO::PARAM_STR);
 
-        return $stmt->execute();
+        $result = $stmt -> execute();
+
+        if ($result) {           
+            if ($deleteCategoryId == $newCategoryId){
+                static::updateExpenseCategory($userId, $deleteCategoryId, 0);
+            } else {
+                static::updateExpenseCategory($userId, $deleteCategoryId, $newCategoryId);
+            }
+        }
+
+        return $result;
     }
+
+    /**
+     * Update expense category with deleted category
+     * 
+     * @return void
+     */
+    public static function updateExpenseCategory($userId, $deletedCategoryId, $newCategoryId) {
+        $sql = 'UPDATE expenses
+                SET expense_category_assigned_to_user_id = :new_category
+                WHERE expenses.expense_category_assigned_to_user_id = :delete_category AND
+                expenses.user_id = :user_id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':delete_category', $deletedCategoryId, PDO::PARAM_INT);
+        $stmt->bindValue(':new_category', $newCategoryId, PDO::PARAM_INT);
+
+        $stmt->execute();
+    } 
 
     /**
      * Delete payment
@@ -286,6 +320,9 @@ class Expense extends \Core\Model {
      * @return boolean True when delete successfull, false otherwise 
      */
     public static function deletePayment($data, $userId) {
+        $deletePaymentId = static::getPaymentID($userId, $data['deletePayment']);
+        $newPaymentId = static::getPaymentID($userId, $data['newPayment']);
+        
         $sql = 'DELETE FROM payment_methods_assigned_to_users
                 WHERE name = :payment_name AND
                 user_id = :user_id';
@@ -296,8 +333,39 @@ class Expense extends \Core\Model {
         $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
         $stmt->bindValue(':payment_name', $data['deletePayment'], PDO::PARAM_STR);
 
-        return $stmt->execute();
+        $result = $stmt->execute();
+
+        if ($result) {           
+            if ($deletePaymentId == $newPaymentId){
+                static::updateExpensePayment($userId, $deletePaymentId, 0);
+            } else {
+                static::updateExpensePayment($userId, $deletePaymentId, $newPaymentId);
+            }
+        }
+
+        return $result;
     }
+
+    /**
+     * Update expense payment with deleted category
+     * 
+     * @return void
+     */
+    public static function updateExpensePayment($userId, $deletePaymentId, $newPaymentId) {
+        $sql = 'UPDATE expenses
+                SET payment_method_assigned_to_user_id = :new_payment
+                WHERE expenses.payment_method_assigned_to_user_id = :delete_payment AND
+                expenses.user_id = :user_id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':delete_payment', $deletePaymentId, PDO::PARAM_INT);
+        $stmt->bindValue(':new_payment', $newPaymentId, PDO::PARAM_INT);
+
+        $stmt->execute();
+    } 
 
     /**
      * Save new category

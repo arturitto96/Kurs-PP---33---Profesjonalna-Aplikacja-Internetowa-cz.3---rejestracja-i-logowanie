@@ -9,7 +9,7 @@
         <div class="container-fluid">
             <a class="navbar-brand"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
             {% for message in flash_messages %}
-                    <p class="text-{{ message.type }}">{{ message.body }}</p>
+                    <p class="text-{{ message.type }} border border-{{ message.type }} flash">{{ message.body }}</p>
             {% endfor %}
             <div>
                 <form action="/login/create" method="post" class="d-flex" >
