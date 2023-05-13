@@ -5,33 +5,54 @@
 {% block graph %}
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      google.charts.load("current", {packages:["corechart"]});
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-            ['Kategoria', 'Wartość']
-            {% if user.expenseFullSummary is not empty %}
-                {% for single in user.expenseFullSummary %}
-                    {% for value in single %}
-                        {% if loop.index == 1 %}
-                            ,['{{ value }}',
-                        {% else %}
-                            {{ value }}]
-                        {% endif %}
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+      
+        function drawChart() {
+            var incomeData = google.visualization.arrayToDataTable([
+                ['Kategoria', 'Wartość']
+                {% if user.incomeFullSummary is not empty %}
+                    {% for single in user.incomeFullSummary %}
+                        {% for value in single %}
+                            {% if loop.index == 1 %}
+                                ,['{{ value }}',
+                            {% else %}
+                                {{ value }}]
+                            {% endif %}
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
-            {% endif %}
-        ]);
+                {% endif %}
+            ]);
 
-        var options = {
-          backgroundColor: '#144272',
-          pieHole: 0.5,
-          legend: {textStyle: {color: 'white'}}
-        };
+            var expenseData = google.visualization.arrayToDataTable([
+                ['Kategoria', 'Wartość']
+                {% if user.expenseFullSummary is not empty %}
+                    {% for single in user.expenseFullSummary %}
+                        {% for value in single %}
+                            {% if loop.index == 1 %}
+                                ,['{{ value }}',
+                            {% else %}
+                                {{ value }}]
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+            ]);
+            
+            var options = {
+                backgroundColor: '#144272',
+                pieHole: 0.5,
+                legend: {
+                    textStyle: {color: 'white'},
+                    position: "bottom"
+                }
+            };
 
-        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-        chart.draw(data, options);
-      }
+            var chart = new google.visualization.PieChart(document.getElementById('incomeChart'));
+            chart.draw(incomeData, options);
+            var chart = new google.visualization.PieChart(document.getElementById('expenseChart'));
+            chart.draw(expenseData, options);
+        }
 </script>
 {% endblock %}
 
@@ -150,11 +171,16 @@
                 </table>
             </div>
         </div>
-        <div class="col-lg-12">
+        <div class="col-lg-6">
+            <div class="sheet">
+                <h3>Wykres kołowy uzyskanych przychodów w podanym okresie</h3>
+                <div id="incomeChart" class="chart" style="width: 100%; height: 500px;"></div>
+            </div>
+        </div>
+        <div class="col-lg-6">
             <div class="sheet">
                 <h3>Wykres kołowy dokonanych wydatków w podanym okresie</h3>
-                <h4>Okres od: {{ start }}, do: {{ end }}</h4>
-                <div id="donutchart" class="chart" style="width: 50%; height: 500px;"></div>
+                <div id="expenseChart" class="chart" style="width: 100%; height: 500px;"></div>
             </div>
         </div>
     </div>
