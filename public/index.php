@@ -38,5 +38,7 @@ $router->add('logout', ['controller' => 'Login', 'action' => 'destroy']);
 $router->add('signup/activate/{token:[\da-f]+}', ['controller' => 'Signup', 'action' => 'activate']);
 $router->add('password/reset/{token:[\da-f]+}', ['controller' => 'Password', 'action' => 'reset']);
 $router->add('{controller}/{action}');
+$router->add('api/limit/{category:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}', ['controller' => 'Profile', 'action' => 'categoryLimit']);
+$router->add('api/limitSummary/{category:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}', ['controller' => 'Profile', 'action' => 'categoryLimitSummary']);
     
 $router->dispatch($_SERVER['QUERY_STRING']);
