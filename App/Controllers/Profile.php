@@ -203,13 +203,13 @@ class Profile extends Authenticated {
     public function editPaymentMethodsAction() {
         View::renderTemplate('Profile/editPayment.html', ['user' => $this -> user]);
     }
-    
+
     /**
-     * Save new name for selected category
+     * Update selected category
      * 
      * @return void
      */
-    public function saveNewCategoryNameAction() {
+    public function updateCategoryAction() {
         if ($_POST['type'] == 'income') {
             if (Income::editCategoryName($_POST, $this -> user -> id)) {
                 Flash::addMessage('Pomyślnie zapisano zmianę nazwy kategorii');
@@ -219,7 +219,7 @@ class Profile extends Authenticated {
                 $this -> redirect('/profile/editIncomesCategory');
             }
         } else if ($_POST['type'] == 'expense') {
-            if (Expense::editCategoryName($_POST, $this -> user -> id)) {
+            if (Expense::editCategory($_POST, $this -> user -> id)) {
                 Flash::addMessage('Pomyślnie zapisano zmianę nazwy kategorii');
                 $this -> redirect('/profile/editExpensesCategory');
             } else {
@@ -347,6 +347,29 @@ class Profile extends Authenticated {
             Flash::addMessage('Coś poszło nie tak', FLASH::WARNING);
             $this -> redirect('/profile/show');
         }
+    }
+
+    /**
+     * Gets the limit value for category
+     * 
+     * @return float Limit value
+     */
+    public function categoryLimitAction() {
+        $categoryName = $this -> route_params['category'];
+
+        echo json_encode(Expense::getCategoryLimit($categoryName, $this -> user -> id), JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * Gets the summary for selected category in this month
+     * 
+     * @return float Summary
+     */
+    public function categoryLimitSummaryAction() {
+        $categoryName = $this -> route_params['category'];
+        $month = substr($this -> todayDate, 4, -2);
+
+        echo json_encode(Expense::getCategorySummary($categoryName, $month, $this -> user -> id), JSON_UNESCAPED_UNICODE);
     }
 }
 

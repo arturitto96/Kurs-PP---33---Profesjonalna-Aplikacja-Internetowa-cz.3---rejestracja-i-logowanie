@@ -224,18 +224,38 @@ class Expense extends \Core\Model {
      *
      * @return boolean True when update successfull, false otherwise 
      */
-    public static function editCategoryName($data, $userId) {
+    public static function editCategory($data, $userId) {
         $sql = 'UPDATE expenses_category_assigned_to_users
-                SET name = :new_category_name
-                WHERE name = :old_category_name AND
+                SET';
+
+        if($data['newCategoryName'] !== "") {
+            $sql .= ' name = :new_category_name';
+        } 
+        
+        if ($data['category_limit'] !== "") {
+            if ($data['newCategoryName'] !== "") {
+                $sql .= ',';
+            }
+            $sql .= ' category_limit = :category_limit';
+        }
+        
+        $sql .= ' WHERE name = :old_category_name AND
                 user_id = :user_id';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
 
         $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
-        $stmt->bindValue(':new_category_name', $data['newCategoryName'], PDO::PARAM_STR);
+
+        if ($data['newCategoryName'] !== "") {
+            $stmt->bindValue(':new_category_name', $data['newCategoryName'], PDO::PARAM_STR);
+        }
+
         $stmt->bindValue(':old_category_name', $data['oldCategoryName'], PDO::PARAM_STR);
+
+        if ($data['category_limit'] !== "") {
+            $stmt->bindValue(':category_limit', $data['category_limit'] , PDO::PARAM_STR);
+        }
 
         return $stmt->execute();
     }
@@ -311,6 +331,12 @@ class Expense extends \Core\Model {
         $stmt->bindValue(':delete_category', $deletedCategoryId, PDO::PARAM_INT);
         $stmt->bindValue(':new_category', $newCategoryId, PDO::PARAM_INT);
 
+        if ($data['category_limit'] === "") {
+            $stmt->bindValue(':category_limit', NULL , PDO::PARAM_NULL);
+        } else {
+            $stmt->bindValue(':category_limit', $data['category_limit'] , PDO::PARAM_STR);
+        }
+
         $stmt->execute();
     } 
 
@@ -373,14 +399,20 @@ class Expense extends \Core\Model {
      * @return boolean True when save successfull, false otherwise 
      */
     public static function saveNewCategory($data, $userId) {
-        $sql = 'INSERT INTO expenses_category_assigned_to_users(name, user_id)
-                VALUES (:new_category_name, :user_id)';
+        $sql = 'INSERT INTO expenses_category_assigned_to_users(name, user_id, category_limit)
+                VALUES (:new_category_name, :user_id, :category_limit)';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
 
         $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
         $stmt->bindValue(':new_category_name', $data['newCategoryName'], PDO::PARAM_STR);
+
+        if ($data['category_limit'] === "") {
+            $stmt->bindValue(':category_limit', NULL , PDO::PARAM_NULL);
+        } else {
+            $stmt->bindValue(':category_limit', $data['category_limit'] , PDO::PARAM_STR);
+        }
 
         return $stmt->execute();
     }
@@ -401,5 +433,66 @@ class Expense extends \Core\Model {
         $stmt->bindValue(':new_payment_name', $data['newPaymentName'], PDO::PARAM_STR);
 
         return $stmt->execute();
+    }
+
+    /**
+     * Get limit value for selected category
+     *
+     * @return float Limit value, NULL otherwise
+     */
+    public static function getCategoryLimit($categoryName, $userId) {
+        $sql = 'SELECT expenses_category_assigned_to_users.category_limit 
+                FROM expenses_category_assigned_to_users 
+                WHERE expenses_category_assigned_to_users.user_id = :user_id AND
+                expenses_category_assigned_to_users.name = :category_name;';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':category_name', $categoryName, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        $categoryLimit = $stmt->fetchColumn();
+
+        if (!empty($categoryLimit)) {
+            return $categoryLimit;
+        } else {
+            return 0;
+        }   
+    }
+
+    /**
+     * Get summary for selected category
+     *
+     * @return float Summary of expenses this month for selected category
+     */
+    public static function getCategorySummary($categoryName, $month, $userID) {
+        $categoryID = static::getCategoryID($userID, $categoryName);
+        $month = "%" . $month . "%";
+
+        $sql = 'SELECT SUM(expenses.amount)
+                FROM expenses
+                WHERE expenses.expense_category_assigned_to_user_id = :category_id AND 
+                expenses.user_id = :user_id AND
+                expenses.date_of_expense LIKE :month';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':category_id', $categoryID, PDO::PARAM_INT);
+        $stmt->bindValue(':user_id', $userID, PDO::PARAM_INT);
+        $stmt->bindValue(':month', $month, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        $categorySummary = $stmt -> fetchColumn();
+
+        if (!empty($categorySummary)) {
+            return $categorySummary;
+        } else {
+            return 0;
+        }   
     }
 }

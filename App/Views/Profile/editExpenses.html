@@ -52,6 +52,9 @@
                     <input name="type" type="hidden" value="expense" />
                     <p class="text-dark bg-white">Podaj nazwę nowej kategorii:</p>
                     <input name="newCategoryName" type="text" class="form-control my-input" placeholder="Nazwa nowej kategorii" required>
+                    <p class="text-dark bg-white">Czy dla nowej kategorii dodać limit wydatków?</p>
+                    <input name="category_limit" type="number" class="form-control my-input" placeholder="Kwota limitu" min="0" step="0.01">
+                    <p class="text-dark bg-white"><i>W przypadku gdy nie chcesz dodawać limitu, pozostaw to pole puste.</i></p>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success">Zatwierdź</button>
@@ -69,7 +72,7 @@
         <div class="modal-header">
           <h1 class="modal-title fs-5 text-dark bg-white" id="exampleModalLabel">Zmiana nazwy kategorii</h1>
         </div>
-            <form action="/profile/saveNewCategoryName" method="post">
+            <form action="/profile/updateCategory" method="post">
                 <div class="modal-body">
                     <input name="type" type="hidden" value="expense" />
                     <p class="text-dark bg-white">Wybierz nazwę kategorii, którą chcesz edytować:</p>
@@ -84,7 +87,10 @@
                         {% endif %}
                     </select>
                     <p class="text-dark bg-white">Podaj nową nazwę kategorii:</p>
-                    <input name="newCategoryName" type="text" class="form-control my-input" placeholder="Nowa nazwa kategorii" required>
+                    <input name="newCategoryName" type="text" class="form-control my-input" placeholder="Nowa nazwa kategorii">
+                    <p class="text-dark bg-white">Czy dla kategorii dodać limit wydatków?</p>
+                    <input name="category_limit" type="number" class="form-control my-input" placeholder="Kwota limitu" min="0" step="0.01">
+                    <p class="text-dark bg-white"><i>W przypadku gdy nie chcesz dodawać limitu, pozostaw to pole puste.</i></p>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success">Zatwierdź</button>
