@@ -2,7 +2,7 @@
 
 {% block title %}Resetowanie hasła{% endblock %}
 
-{% block header %}
+{% block navbar %}
 
     <!-- Navbar Section -->
     <section class="register">
@@ -15,16 +15,14 @@
             </div>
           </nav>
     </section> 
-
 {% endblock %}
 
-{% block body %}
-    
-    <div class="container-fluid">
+{% block sidebar %}
+{% endblock %}
+
+{% block actionArea %} 
+    <div class="infoRegisterBox">
         <p>Link do resetowania hasła jest nieprawidłowy lub utracił swoją ważność.</p>
-           
-        <p>Proszę kliknąć <a href="/">tutaj</a> aby ponownie poprosić o zresetowanie hasła.</p>
- 
+        <p>Proszę kliknąć <a class="btn btn-outline-success" href="/">tutaj</a> aby ponownie poprosić o zresetowanie hasła.</p>
     </div>
-        
 {% endblock %}

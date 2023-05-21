@@ -2,41 +2,23 @@
 
 {% block title %}Edycja danych użytkownika{% endblock %}
 
-{% block header %}
-<!-- Navbar Section -->
-<section class="register">
-    <nav class="navbar">
-        <div class="container-fluid">
-            <a class="navbar-brand"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
-            {% for message in flash_messages %}
-                <p class="text-{{ message.type }} border border-{{ message.type }} flash">{{ message.body }}</p>
-            {% endfor %}
-        </div>
-    </nav>
-</section>
-{% endblock %}
-
-{% block body %}
+{% block actionArea %}
 <!-- Setup data for edit Section -->
-<section id="data-setup">
-    <div class="row">
-        <div class="col-lg-12">
-            <h2>Edycja danych użytkownika</h2>
-        </div>
-        <div class="col-lg-12">
-            <form action="/profile/updateUser" method="post">
-                <input name="newUserName" type="text" class="form-control my-input" placeholder="Imię" value="{{ user.username }}" required>
-                <input name="newEmail" type="email" class="form-control my-input" placeholder="e-mail" value="{{ user.email }}" required>
-                <input name="newPassword" type="password" class="form-control my-input" placeholder="Hasło" id="inputPassword">
-                <button class="btn btn-success btn-submit" type="submit">Zapisz zmiany</button>
-                <a href="/profile/show">
-                    <button class="btn btn-danger btn-submit" type="button">Anuluj</button>
-                </a>
-            </form>
-            <button class="btn btn-outline-danger btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Usunięcie konta</button>
-        </div>
+<div class="actionArea">
+    <div class="setupDataBox {{mode}}Mode">
+        <h5>Edycja danych użytkownika</h5>
+        <form action="/profile/updateUser" method="post">
+            <input name="newUserName" type="text" class="form-control setupDataInput" placeholder="Imię" value="{{ user.username }}" required>
+            <input name="newEmail" type="email" class="form-control setupDataInput" placeholder="e-mail" value="{{ user.email }}" required>
+            <input name="newPassword" type="password" class="form-control setupDataInput" placeholder="Hasło" id="inputPassword">
+            <button class="btn btn-success submitBtn" type="submit">Zapisz zmiany</button>
+        </form>
     </div>
-</section>
+    <div class="setupDataBox {{mode}}Mode">
+        <h5>Usunięcie konta użytkownika</h5>
+        <button class="btn btn-outline-danger btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Usuń</button>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -61,11 +43,13 @@
 </div>
 
 {% if user.errors is not empty %}
-<p>Błędy:</p>
-<ul>
-    {% for error in user.errors %}
-    <li>{{ error }}</li>
-    {% endfor %}
-</ul>
+<div class="infoBox">
+    <p>Błędy:</p>
+    <ul>
+        {% for error in user.errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+</div>
 {% endif %}
 {% endblock %}

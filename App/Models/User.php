@@ -63,6 +63,8 @@ class User extends \Core\Model
 
     public $is_active;
 
+    public $app_mode;
+
     public $password_reset_token;
 
     /**
@@ -602,4 +604,24 @@ class User extends \Core\Model
         $this -> expenseFullSummary = json_encode($this -> expenseFullSummary, JSON_NUMERIC_CHECK);
         $this -> expenseFullSummary = json_decode($this -> expenseFullSummary, true);
     }
+
+    /**
+     * Updates picked app mode
+     *
+     * @return boolean True if the data was updated, false otherwise
+     */
+    public function updateUserMode() {
+        $sql = 'UPDATE users
+                SET app_mode = :app_mode
+                WHERE users.id = :user_id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':app_mode', $this -> app_mode, PDO::PARAM_BOOL);
+        $stmt->bindValue(':user_id', $this -> id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
 }

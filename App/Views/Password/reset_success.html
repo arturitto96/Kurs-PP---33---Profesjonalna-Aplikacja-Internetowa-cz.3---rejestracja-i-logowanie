@@ -2,7 +2,7 @@
 
 {% block title %}Resetowanie hasła{% endblock %}
 
-{% block header %}
+{% block navbar %}
 
     <!-- Navbar Section -->
     <section class="register">
@@ -15,15 +15,16 @@
             </div>
           </nav>
     </section> 
-
 {% endblock %}
 
-{% block body %}
+{% block sidebar %}
+{% endblock %}
+
+{% block actionArea %}
     
-    <div class="container-fluid">
+    <div class="infoRegisterBox">
         <p>Hasło zostało pomyślnie zresetowane.</p>
-           
-        <p>Teraz możesz się <a href="/">zalogować</a>.</p>
+        <p>Teraz możesz się <a class="btn btn-outline-success" href="/">zalogować</a>.</p>
  
     </div>
         

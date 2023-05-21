@@ -2,43 +2,16 @@
 
 {% block title %}Edycja kategorii wydatków{% endblock %}
 
-{% block header %}
-<!-- Navbar Section -->
-<section class="register">
-    <nav class="navbar">
-        <div class="container-fluid">
-            <a class="navbar-brand"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
-            {% for message in flash_messages %}
-                <p class="text-{{ message.type }} border border-{{ message.type }} flash">{{ message.body }}</p>
-            {% endfor %}
-        </div>
-    </nav>
-</section>
-{% endblock %}
-
-{% block body %}
+{% block actionArea %}
 <!-- Setup data for edit Section -->
-<section id="data-setup">    
-    <div class="row">
-        <div class="col-lg-12">
-            <h2>Edycja kategorii wydatków</h2>
-        </div>
-        <div class="col-lg-12">
-            <button class="btn btn-outline-light btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#newModal">Nowa kategoria</button>
-        </div>
-        <div class="col-lg-12">
-            <button class="btn btn-outline-light btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#editModal">Edytuj kategorię</button>
-        </div>
-        <div class="col-lg-12">
-            <button class="btn btn-outline-light btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal">Usuń kategorię</button>
-        </div>
-        <div class="col-lg-12">
-            <a href="/profile/show">
-                <button class="btn btn-danger btn-delete" type="button">Powrót</button>
-            </a>
-        </div>
+<div class="actionArea">
+    <div class="setupDataBox {{mode}}Mode">
+        <h5>Edycja kategorii wydatków</h5>
+        <button class="btn btn-light btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#newModal">Nowa kategoria</button>
+        <button class="btn btn-light btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#editModal">Edytuj kategorię</button>
+        <button class="btn btn-light btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal">Usuń kategorię</button>
     </div>
-</section>
+</div>
 
 <!-- Modal new expense -->
 <div class="modal fade" id="newModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -76,7 +49,7 @@
                 <div class="modal-body">
                     <input name="type" type="hidden" value="expense" />
                     <p class="text-dark bg-white">Wybierz nazwę kategorii, którą chcesz edytować:</p>
-                    <select name="oldCategoryName" class="form-select my-input" placeholder="Kategoria" required>
+                    <select id="selectCategory" name="oldCategoryName" class="form-select my-input" placeholder="Kategoria" required>
                         {% if user.expensesCategories is not empty %}
                                 {% for categories in user.expensesCategories %}
                                     {% for category in categories %}
@@ -89,7 +62,7 @@
                     <p class="text-dark bg-white">Podaj nową nazwę kategorii:</p>
                     <input name="newCategoryName" type="text" class="form-control my-input" placeholder="Nowa nazwa kategorii">
                     <p class="text-dark bg-white">Czy dla kategorii dodać limit wydatków?</p>
-                    <input name="category_limit" type="number" class="form-control my-input" placeholder="Kwota limitu" min="0" step="0.01">
+                    <input id="categoryLimit" name="category_limit" type="number" class="form-control my-input" placeholder="Kwota limitu" min="0" step="0.01">
                     <p class="text-dark bg-white"><i>W przypadku gdy nie chcesz dodawać limitu, pozostaw to pole puste.</i></p>
                 </div>
                 <div class="modal-footer">
@@ -151,4 +124,5 @@
     {% endfor %}
 </ul>
 {% endif %}
+<script src="/js/limitModal.js"></script>
 {% endblock %}

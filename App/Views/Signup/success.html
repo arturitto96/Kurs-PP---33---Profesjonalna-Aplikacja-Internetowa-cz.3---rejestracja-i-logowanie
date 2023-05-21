@@ -2,7 +2,7 @@
 
 {% block title %}Rejestracja{% endblock %}
 
-{% block header %}
+{% block navbar %}
 
     <!-- Navbar Section -->
     <section class="register">
@@ -18,16 +18,16 @@
 
 {% endblock %}
 
-{% block body %}
+{% block sidebar %}
+{% endblock %}
+
+{% block actionArea %}
     
-    <div class="container-fluid">
+    <div class="infoRegisterBox">
         <p>Sukces! Dziękujemy za rejestrację.</p>
-
         <p>Na twoją skrzynkę mailową właśnie wysłaliśmy wiadomość z linkiem aktywacyjnym.</p>
-           
         <p>Aby korzystać ze swojego konta aktywuj je.</p>
-
-        <a href="/">Strona główna</a>
+        <a class="btn btn-outline-success" href="/">Strona główna</a>
     </div>
     
 {% endblock %}
