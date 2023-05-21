@@ -2,31 +2,25 @@
 
 {% block title %}Sign up{% endblock %}
 
-{% block header %}
-
+{% block navbar %}
     <!-- Navbar Section -->
-    <section class="register">
-        <nav class="navbar">
-            <div class="container-fluid">
-                <a class="navbar-brand"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
-                {% for message in flash_messages %}
-                    <p class="text-{{ message.type }} border border-{{ message.type }} flash">{{ message.body }}</p>
-                {% endfor %}
-            </div>
-          </nav>
-    </section> 
-
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
+            {% for message in flash_messages %}
+                <p class="text-{{ message.type }} border border-{{ message.type }} flash">{{ message.body }}</p>
+            {% endfor %}
+        </div>
+    </nav>
 {% endblock %}
 
-{% block body %}
-    
+{% block sidebar %}
+{% endblock %}
+
+{% block actionArea %}
     <!-- Navbar Section -->
-    <div class="container-fluid">
+    <div class="infoRegisterBox">
         <p>Sukces! Dziękujemy za aktywację konta w serwisie.</p>
-           
-        <p>Aby korzystać ze swojego konta <a href="/">zaloguj się</a>.</p>
-
+        <p>Aby korzystać ze swojego konta <a class="btn btn-outline-success" href="/">zaloguj się</a>.</p>
     </div>
-        
-
 {% endblock %}

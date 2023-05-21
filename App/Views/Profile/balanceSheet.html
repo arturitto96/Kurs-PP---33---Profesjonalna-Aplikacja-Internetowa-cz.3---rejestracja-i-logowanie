@@ -2,81 +2,107 @@
 
 {% block title %}Bilans{% endblock %}
 
-{% block graph %}
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-        google.charts.load("current", {packages:["corechart"]});
-        google.charts.setOnLoadCallback(drawChart);
-      
-        function drawChart() {
-            var incomeData = google.visualization.arrayToDataTable([
-                ['Kategoria', 'Wartość']
-                {% if user.incomeFullSummary is not empty %}
-                    {% for single in user.incomeFullSummary %}
-                        {% for value in single %}
-                            {% if loop.index == 1 %}
-                                ,['{{ value }}',
-                            {% else %}
-                                {{ value }}]
-                            {% endif %}
-                        {% endfor %}
-                    {% endfor %}
-                {% endif %}
-            ]);
-
-            var expenseData = google.visualization.arrayToDataTable([
-                ['Kategoria', 'Wartość']
-                {% if user.expenseFullSummary is not empty %}
-                    {% for single in user.expenseFullSummary %}
-                        {% for value in single %}
-                            {% if loop.index == 1 %}
-                                ,['{{ value }}',
-                            {% else %}
-                                {{ value }}]
-                            {% endif %}
-                        {% endfor %}
-                    {% endfor %}
-                {% endif %}
-            ]);
-            
-            var options = {
-                backgroundColor: '#144272',
-                pieHole: 0.5,
-                legend: {
-                    textStyle: {color: 'white'},
-                    position: "bottom"
-                }
-            };
-
-            var chart = new google.visualization.PieChart(document.getElementById('incomeChart'));
-            chart.draw(incomeData, options);
-            var chart = new google.visualization.PieChart(document.getElementById('expenseChart'));
-            chart.draw(expenseData, options);
-        }
-</script>
-{% endblock %}
-
-{% block header %}
-<!-- Navbar Section -->
-<section class="register">
-    <nav class="navbar">
-        <div class="container-fluid">
-            <a class="navbar-brand"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
-            {% for message in flash_messages %}
-                <p class="text-{{ message.type }} border border-{{ message.type }} flash">{{ message.body }}</p>
-            {% endfor %}
-            <div>
-                <button class="btn btn-outline-light" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Zmień okres</button>
-                <a href="/profile/show"><button class="btn btn-outline-danger" type="button">Powrót</button></a>
+    {% block actionArea %}
+    <!-- Preview of current balance sheet section -->
+    <div class="actionArea">
+        <section id="balanceSheet">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="balanceSheetHeadingBox {{mode}}Mode d-flex justify-content-between">
+                        <h2 class="balanceSheetTitle">Bilans z okresu od: {{ start }}, do: {{ end }}</h2>
+                        <button class="btn btn-light balanceSheetBtn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Zmień okres</button>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="sheet balanceSheetBox {{mode}}Mode">
+                        <h3>Zestawienie przychodów</h3>
+                        <table class="table {{mode}}Mode">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Kategoria</th>
+                                <th scope="col">Suma przychodów</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% if user.incomeFullSummary is not empty %}
+                                    {% for single in user.incomeFullSummary %}
+                                    <tr>
+                                        <th scope="row">{{ loop.index }}</th>
+                                        {% for value in single %}
+                                            {% if loop.index == 1 %}
+                                                <td>{{ value }}</td>
+                                            {% else %}
+                                                <td>{{ value }} PLN</td>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <th scope="row">1</th>
+                                    <td>Brak przychodów w podanym okresie</td>
+                                    <td>0 PLN</td>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="sheet balanceSheetBox {{mode}}Mode">
+                        <h3>Zestawienie wydatków</h3>
+                        <table class="table {{mode}}Mode">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Kategoria</th>
+                                <th scope="col">Suma wydatków</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% if user.expenseFullSummary is not empty %}
+                                    {% for single in user.expenseFullSummary %}
+                                    <tr>
+                                        <th scope="row">{{ loop.index }}</th>
+                                        {% for value in single %}
+                                            {% if loop.index == 1 %}
+                                                <td>{{ value }}</td>
+                                            {% else %}
+                                                <td>{{ value }} PLN</td>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <th scope="row">1</th>
+                                    <td>Brak wydatków w podanym okresie</td>
+                                    <td>0 PLN</td>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="sheet balanceSheetBox {{mode}}Mode">
+                        <h3>Wykres kołowy uzyskanych przychodów w podanym okresie</h3>
+                        <div id="incomeChart" class="chart"></div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="sheet balanceSheetBox {{mode}}Mode">
+                        <h3>Wykres kołowy dokonanych wydatków w podanym okresie</h3>
+                        <div id="expenseChart" class="chart"></div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </nav>
+        </section>
+    </div>
+
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
+            <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5 text-dark bg-white" id="exampleModalLabel">Zmiana okresu dla bilansu</h1>
+                <h1 class="modal-title fs-5 text-dark bg-white" id="exampleModalLabel">Zmiana okresu dla bilansu</h1>
             </div>
                 <form action="/profile/showBalanceSheet" method="post">
                     <div class="modal-body">
@@ -90,99 +116,73 @@
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Zamknij</button>
                     </div>
                 </form>
-          </div>
+            </div>
         </div>
-      </div>
-</section>
+        </div>
+    </section>
 {% endblock %}
 
-{% block body %}
-<!-- Preview of current balance sheet section -->
-<section id="balanceSheet">
-    <div class="row">
-        <div class="col-lg-12">
-            <h2>Bilans z okresu od: {{ start }}, do: {{ end }}</h2>
-        </div>
-        <div class="col-lg-6">
-            <div class="sheet">
-                <h3>Zestawienie przychodów</h3>
-                <table class="table text-white">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Kategoria</th>
-                        <th scope="col">Suma przychodów</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        {% if user.incomeFullSummary is not empty %}
-                            {% for single in user.incomeFullSummary %}
-                            <tr>
-                                <th scope="row">{{ loop.index }}</th>
-                                {% for value in single %}
-                                    {% if loop.index == 1 %}
-                                        <td>{{ value }}</td>
-                                    {% else %}
-                                        <td>{{ value }} PLN</td>
-                                    {% endif %}
-                                {% endfor %}
-                            </tr>
-                            {% endfor %}
+{% block graph %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(drawChart);
+    
+    function drawChart() {
+        var incomeData = google.visualization.arrayToDataTable([
+            ['Kategoria', 'Wartość']
+            {% if user.incomeFullSummary is not empty %}
+                {% for single in user.incomeFullSummary %}
+                    {% for value in single %}
+                        {% if loop.index == 1 %}
+                            ,['{{ value }}',
                         {% else %}
-                            <th scope="row">1</th>
-                            <td>Brak przychodów w podanym okresie</td>
-                            <td>0 PLN</td>
+                            {{ value }}]
                         {% endif %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="sheet">
-                <h3>Zestawienie wydatków</h3>
-                <table class="table text-white">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Kategoria</th>
-                        <th scope="col">Suma wydatków</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        {% if user.expenseFullSummary is not empty %}
-                            {% for single in user.expenseFullSummary %}
-                            <tr>
-                                <th scope="row">{{ loop.index }}</th>
-                                {% for value in single %}
-                                    {% if loop.index == 1 %}
-                                        <td>{{ value }}</td>
-                                    {% else %}
-                                        <td>{{ value }} PLN</td>
-                                    {% endif %}
-                                {% endfor %}
-                            </tr>
-                            {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+        ]);
+
+        var expenseData = google.visualization.arrayToDataTable([
+            ['Kategoria', 'Wartość']
+            {% if user.expenseFullSummary is not empty %}
+                {% for single in user.expenseFullSummary %}
+                    {% for value in single %}
+                        {% if loop.index == 1 %}
+                            ,['{{ value }}',
                         {% else %}
-                            <th scope="row">1</th>
-                            <td>Brak wydatków w podanym okresie</td>
-                            <td>0 PLN</td>
+                            {{ value }}]
                         {% endif %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="sheet">
-                <h3>Wykres kołowy uzyskanych przychodów w podanym okresie</h3>
-                <div id="incomeChart" class="chart" style="width: 100%; height: 500px;"></div>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="sheet">
-                <h3>Wykres kołowy dokonanych wydatków w podanym okresie</h3>
-                <div id="expenseChart" class="chart" style="width: 100%; height: 500px;"></div>
-            </div>
-        </div>
-    </div>
-</section>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+        ]);
+        
+        var options = {
+            pieHole: 0.5,
+            {% if mode == "dark" %}
+            backgroundColor: '#012918',
+            {% else %}
+            backgroundColor: '#979e86',
+            {% endif %}
+            legend: {
+                textStyle: {color: {% if mode == "dark" %}'white'{% else %} '#012918' {% endif %}},
+                position: "bottom"
+            }
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('incomeChart'));
+        chart.draw(incomeData, options);
+        var chart = new google.visualization.PieChart(document.getElementById('expenseChart'));
+        chart.draw(expenseData, options);
+
+        window.onresize = () => {
+            chart = new google.visualization.PieChart(document.getElementById('incomeChart'));
+            chart.draw(incomeData, options);
+            chart = new google.visualization.PieChart(document.getElementById('expenseChart'));
+            chart.draw(expenseData, options);
+        }
+    }
+</script>
 {% endblock %}

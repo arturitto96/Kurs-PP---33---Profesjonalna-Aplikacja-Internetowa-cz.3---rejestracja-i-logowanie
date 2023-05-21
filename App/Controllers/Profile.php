@@ -43,6 +43,21 @@ class Profile extends Authenticated {
         $this -> user -> getUserCategories();
         $this -> user -> getShortSummary($this -> firstDate, $this -> todayDate);
     }
+
+    
+
+    /**
+     * Get the mode of app for user 
+     * 
+     * @return string Mode
+     */
+    public function getUserMode() {
+        if ($this -> user -> app_mode == true) {
+            return "dark";
+        } else {
+            return "light";
+        }
+    }
     
     /**
      * Show the profile
@@ -50,7 +65,7 @@ class Profile extends Authenticated {
      * @return void
      */
     public function showAction() {
-        View::renderTemplate('Profile/show.html', ['user' => $this->user]);
+        View::renderTemplate('Profile/show.html', [ 'user' => $this-> user, 'todayDate' => $this -> todayDate, 'mode' => $this -> getUserMode()]);
     }
 
     /**
@@ -59,7 +74,7 @@ class Profile extends Authenticated {
      * @return void
      */
     public function editUserAction() {
-        View::renderTemplate('Profile/editUser.html', ['user' => $this->user]);
+        View::renderTemplate('Profile/editUser.html', ['user' => $this->user, 'mode' => $this -> getUserMode()]);
     }
 
     /**
@@ -73,7 +88,7 @@ class Profile extends Authenticated {
             Flash::addMessage('Zapisano zmiany');
             $this -> redirect('/profile/show');
         } else {
-            View::renderTemplate('Profile/editUser.html', ['user' => $this->user]);
+            View::renderTemplate('Profile/editUser.html', ['user' => $this->user, 'mode' => $this -> getUserMode()]);
         }
     }
 
@@ -97,7 +112,7 @@ class Profile extends Authenticated {
      * @return void
      */
     public function newIncomeAction() {
-        View::renderTemplate('Profile/newIncome.html', ['user' => $this -> user, 'today' => $this -> todayDate]);
+        View::renderTemplate('Profile/newIncome.html', ['user' => $this -> user, 'today' => $this -> todayDate, 'mode' => $this -> getUserMode()]);
     }
 
      /**
@@ -120,7 +135,7 @@ class Profile extends Authenticated {
      * @return void
      */
     public function newExpenseAction() {
-        View::renderTemplate('Profile/newExpense.html', ['user' => $this -> user, 'today' => $this -> todayDate]);
+        View::renderTemplate('Profile/newExpense.html', ['user' => $this -> user, 'today' => $this -> todayDate, 'mode' => $this -> getUserMode()]);
     }
 
     /**
@@ -148,13 +163,15 @@ class Profile extends Authenticated {
             View::RenderTemplate('Profile/balanceSheet.html', [ 'user' => $this -> user, 
                                                                 'start' => $this -> firstDate, 
                                                                 'end' => $this -> todayDate,
-                                                                'today' => $this -> todayDate]);
+                                                                'today' => $this -> todayDate, 
+                                                                'mode' => $this -> getUserMode()]);
         } else {
             $this -> user -> getFullSummary($_POST['startDate'], $_POST['endDate']);    
             View::RenderTemplate('Profile/balanceSheet.html', [ 'user' => $this -> user, 
                                                                 'start' => $_POST['startDate'], 
                                                                 'end' => $_POST['endDate'],
-                                                                'today' => $this -> todayDate]);
+                                                                'today' => $this -> todayDate, 
+                                                                'mode' => $this -> getUserMode()]);
         }
     }
 
@@ -182,7 +199,7 @@ class Profile extends Authenticated {
      * @return void
      */
     public function editIncomesCategoryAction() {
-        View::renderTemplate('Profile/editIncomes.html', ['user' => $this -> user]);
+        View::renderTemplate('Profile/editIncomes.html', ['user' => $this -> user, 'mode' => $this -> getUserMode()]);
     }
 
 
@@ -192,7 +209,7 @@ class Profile extends Authenticated {
      * @return void
      */
     public function editExpensesCategoryAction() {
-        View::renderTemplate('Profile/editExpenses.html', ['user' => $this -> user]);
+        View::renderTemplate('Profile/editExpenses.html', ['user' => $this -> user, 'mode' => $this -> getUserMode()]);
     }
 
     /**
@@ -201,7 +218,7 @@ class Profile extends Authenticated {
      * @return void
      */
     public function editPaymentMethodsAction() {
-        View::renderTemplate('Profile/editPayment.html', ['user' => $this -> user]);
+        View::renderTemplate('Profile/editPayment.html', ['user' => $this -> user, 'mode' => $this -> getUserMode()]);
     }
 
     /**
@@ -370,6 +387,23 @@ class Profile extends Authenticated {
         $month = substr($this -> todayDate, 4, -2);
 
         echo json_encode(Expense::getCategorySummary($categoryName, $month, $this -> user -> id), JSON_UNESCAPED_UNICODE);
+    }
+
+     /**
+     * Toggle between dark and light mode of app
+     * 
+     * @return boolean mode
+     */
+    public function toggleModeAction() {
+        $this -> user -> app_mode = !($this -> user -> app_mode);
+        if ($this -> user -> updateUserMode()) {
+            Flash::addMessage('Zmieniono motyw');
+            $this -> redirect('/profile/show');
+        } else {
+            Flash::addMessage('Nie udało się zapisać zmian', FLASH::WARNING);
+            $this -> redirect('/profile/show');
+        }
+        
     }
 }
 

@@ -2,7 +2,7 @@
 
 {% block title %}Resetowanie hasła{% endblock %}
 
-{% block header %}
+{% block navbar %}
 <!-- Navbar Section -->
 <section class="register">
     <nav class="navbar">
@@ -16,22 +16,21 @@
 </section>
 {% endblock %}
 
-{% block body %}
+{% block sidebar %}
+{% endblock %}
+
+{% block actionArea %}
 <!-- Reset Password Section -->
-<section id="data-steup">
-    <div class="container-fluid">
-        <form action="/password/reset-password" method="post">
-            <input name="token" type="hidden" value="{{ token }}" />
-            
-            <input name="password" type="password" class="form-control my-input" placeholder="hasło" required>
-            <button class="btn btn-success btn-submit" type="submit">Wyślij</button>
-            <a href="/">
-                <button class="btn btn-danger btn-submit" type="button">Anuluj</button>
-            </a>
-        </form>
-        
-    </div>
-</section>
+<div class="setupRegisterDataBox">
+    <h5>Resetowanie hasła do konta</h5>
+    <form action="/password/reset-password" method="post">
+        <input name="token" type="hidden" value="{{ token }}" />
+        <input name="password" type="password" class="form-control setupDataInput" placeholder="Nowe hasło" required>
+        <button class="btn btn-success submitBtn" type="submit">Wyślij</button>
+        <a href="/" class="btn btn-danger submitBtn">Anuluj</a>
+    </form>
+    
+</div>
 
 {% if user.errors is not empty %}
     <p>Errors:</p>

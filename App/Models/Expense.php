@@ -226,17 +226,10 @@ class Expense extends \Core\Model {
      */
     public static function editCategory($data, $userId) {
         $sql = 'UPDATE expenses_category_assigned_to_users
-                SET';
+                SET category_limit = :category_limit';
 
         if($data['newCategoryName'] !== "") {
-            $sql .= ' name = :new_category_name';
-        } 
-        
-        if ($data['category_limit'] !== "") {
-            if ($data['newCategoryName'] !== "") {
-                $sql .= ',';
-            }
-            $sql .= ' category_limit = :category_limit';
+            $sql .= ', name = :new_category_name';
         }
         
         $sql .= ' WHERE name = :old_category_name AND
@@ -253,7 +246,10 @@ class Expense extends \Core\Model {
 
         $stmt->bindValue(':old_category_name', $data['oldCategoryName'], PDO::PARAM_STR);
 
-        if ($data['category_limit'] !== "") {
+
+        if ($data['category_limit'] == "") {
+            $stmt->bindValue(':category_limit', NULL , PDO::PARAM_NULL);
+        } else {
             $stmt->bindValue(':category_limit', $data['category_limit'] , PDO::PARAM_STR);
         }
 
@@ -331,12 +327,6 @@ class Expense extends \Core\Model {
         $stmt->bindValue(':delete_category', $deletedCategoryId, PDO::PARAM_INT);
         $stmt->bindValue(':new_category', $newCategoryId, PDO::PARAM_INT);
 
-        if ($data['category_limit'] === "") {
-            $stmt->bindValue(':category_limit', NULL , PDO::PARAM_NULL);
-        } else {
-            $stmt->bindValue(':category_limit', $data['category_limit'] , PDO::PARAM_STR);
-        }
-
         $stmt->execute();
     } 
 
@@ -408,7 +398,7 @@ class Expense extends \Core\Model {
         $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
         $stmt->bindValue(':new_category_name', $data['newCategoryName'], PDO::PARAM_STR);
 
-        if ($data['category_limit'] === "") {
+        if ($data['category_limit'] == "") {
             $stmt->bindValue(':category_limit', NULL , PDO::PARAM_NULL);
         } else {
             $stmt->bindValue(':category_limit', $data['category_limit'] , PDO::PARAM_STR);
