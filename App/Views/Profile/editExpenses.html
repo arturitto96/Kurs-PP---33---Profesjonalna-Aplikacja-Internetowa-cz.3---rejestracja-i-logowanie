@@ -5,11 +5,33 @@
 {% block actionArea %}
 <!-- Setup data for edit Section -->
 <div class="actionArea">
-    <div class="setupDataBox {{mode}}Mode">
+    <div class="editDataBox {{mode}}Mode">
         <h5>Edycja kategorii wydatków</h5>
-        <button class="btn btn-light btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#newModal">Nowa kategoria</button>
-        <button class="btn btn-light btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#editModal">Edytuj kategorię</button>
-        <button class="btn btn-light btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal">Usuń kategorię</button>
+        <button class="btn btn-light btn-delete {{mode}}Mode" type="button" data-bs-toggle="modal" data-bs-target="#newModal">Nowa kategoria</button>
+        <select id="categoryName" class="form-select editCategoryInput" required>
+            <option>Wybierz kategorię</option>
+            {% if user.expensesCategories is not empty %}
+                {% for categories in user.expensesCategories %}
+                    {% for category in categories %}
+                        <option value='{{ category }}'>{{ category }}</option>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+        </select>
+    </div>
+    <div id="selectedCategoryCard">
+        <form action="/profile/activateLimit" method="post">
+            <input id="hiddenInput" name="categoryName" type="hidden" />
+            <input id="currentLimitState" name="currentLimitState" type="hidden" />
+            <div class="editDataBox {{mode}}Mode">
+                <a class="deleteCategoryBtn" role="button" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                    <i class="fa-solid fa-circle-xmark fa-xl"></i>
+                </a>
+                <h5><i id="selectedCategoryName">"Wybierz kategorię"</i></h5>
+                <button id="activateLimitBtn" class="btn btn-outline-light editCategoryBtn" type="submit"></button>
+                <button class="btn btn-outline-warning editCategoryBtn" type="button" data-bs-toggle="modal" data-bs-target="#editModal">Edytuj</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -41,33 +63,26 @@
 <!-- Modal edit expense -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
+      <div class="modal-content {{mode}}Mode">
         <div class="modal-header">
-          <h1 class="modal-title fs-5 text-dark bg-white" id="exampleModalLabel">Zmiana nazwy kategorii</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Zmiana nazwy kategorii</h1>
         </div>
             <form action="/profile/updateCategory" method="post">
                 <div class="modal-body">
                     <input name="type" type="hidden" value="expense" />
-                    <p class="text-dark bg-white">Wybierz nazwę kategorii, którą chcesz edytować:</p>
-                    <select id="selectCategory" name="oldCategoryName" class="form-select my-input" placeholder="Kategoria" required>
-                        {% if user.expensesCategories is not empty %}
-                                {% for categories in user.expensesCategories %}
-                                    {% for category in categories %}
-                                        <option value='{{ category }}'>{{ category }}</option>
-                                    {% endfor %}
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </select>
-                    <p class="text-dark bg-white">Podaj nową nazwę kategorii:</p>
-                    <input name="newCategoryName" type="text" class="form-control my-input" placeholder="Nowa nazwa kategorii">
-                    <p class="text-dark bg-white">Czy dla kategorii dodać limit wydatków?</p>
-                    <input id="categoryLimit" name="category_limit" type="number" class="form-control my-input" placeholder="Kwota limitu" min="0" step="0.01">
-                    <p class="text-dark bg-white"><i>W przypadku gdy nie chcesz dodawać limitu, pozostaw to pole puste.</i></p>
+                    <input id="hiddenInput" name="oldCategoryName" type="hidden" />
+                    <p>Wybrałeś do edycji kategorię <span id="selectedCategoryName"></span>.</p>
+                    <p>Podaj nową nazwę dla wybranej kategorii:</p>
+                    <input name="newCategoryName" type="text" class="form-control editCategoryInput" placeholder="Nowa nazwa kategorii">
+                    <p>Czy dla kategorii ustawić lub zmienić limit wydatków?</p>
+                    <input id="categoryLimit" name="category_limit" type="number" class="form-control editCategoryInput" placeholder="Kwota limitu" min="0" step="0.01">
+                    <p><i>W przypadku gdy nie chcesz dodawać limitu, pozostaw to pole puste.</i></p>
+                    <!-- <input type="checkbox" name="activateLimit" id="">Czy ustawić limit jako aktywny?</input> -->
+                    <p><i>Limit można aktywować później na karcie kategorii poprzez kliknięcie w przycisk informujący o wysokości limitu.</i></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Zatwierdź</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Anuluj</button>
+                    <button type="submit" class="btn btn-outline-success">Zatwierdź</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Anuluj</button>
                 </div>
             </form>
       </div>
@@ -77,26 +92,16 @@
 <!-- Modal delete expense -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
+      <div class="modal-content {{mode}}Mode">
         <div class="modal-header">
-          <h1 class="modal-title fs-5 text-dark bg-white" id="exampleModalLabel">Usunięcie kategorii</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Usunięcie kategorii</h1>
         </div>
             <form action="/profile/deleteCategory" method="post">
                 <div class="modal-body">
                     <input name="type" type="hidden" value="expense" />
-                    <p class="text-dark bg-white">Wybierz nazwę kategorii, którą chcesz usunąć:</p>
-                    <select name="deleteCategory" class="form-select my-input" placeholder="Kategoria" required>
-                        {% if user.expensesCategories is not empty %}
-                                {% for categories in user.expensesCategories %}
-                                    {% for category in categories %}
-                                        <option value='{{ category }}'>{{ category }}</option>
-                                    {% endfor %}
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </select>
-                    <p class="text-dark bg-white">Wybierz nazwę kategorii, którą przypisać do już dodanych wydatków:</p>
-                    <select name="newCategory" class="form-select my-input" placeholder="Kategoria" required>
+                    <input id="hiddenInput" name="deleteCategory" type="hidden" />
+                    <p>Wybrałeś do usunięcia kategorię <span id="selectedCategoryName"></span>. Wybierz nazwę kategorii, którą przypisać do już dodanych wydatków:</p>
+                    <select name="newCategory" class="form-select editCategoryInput" placeholder="Kategoria" required>
                         {% if user.expensesCategories is not empty %}
                                 {% for categories in user.expensesCategories %}
                                     {% for category in categories %}
@@ -108,8 +113,8 @@
                     </select>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Zatwierdź</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Anuluj</button>
+                    <button type="submit" class="btn btn-outline-success">Zatwierdź</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Anuluj</button>
                 </div>
             </form>
       </div>
@@ -124,5 +129,9 @@
     {% endfor %}
 </ul>
 {% endif %}
-<script src="/js/limitModal.js"></script>
+{% endblock %}
+
+{% block scripts %}
+<!-- <script src="/js/limitSet.js"></script> -->
+<script src="/js/editExpenseCategories.js"></script>
 {% endblock %}

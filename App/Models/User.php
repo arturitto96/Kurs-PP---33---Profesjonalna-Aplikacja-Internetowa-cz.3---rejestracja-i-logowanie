@@ -7,7 +7,12 @@ use \App\Token;
 use \App\Mail;
 use \Core\View;
 use \App\Models\Income;
+use \App\Models\IncomeCategories;
+use \App\Models\IncomeSummaries;
 use \App\Models\Expense;
+use \App\Models\ExpenseCategories;
+use \App\Models\ExpensePaymentMethods;
+use \App\Models\ExpenseSummaries;
 
 /**
  * User model
@@ -284,7 +289,6 @@ class User extends \Core\Model
         $hashed_token = $token->getHash();
         $this->remember_token = $token->getValue();
 
-        //$expiry_timestamp = time() + 60 * 60 * 24 * 30;  // 30 days from now
         $this->expiry_timestamp = time() + 60 * 60 * 24 * 30;  // 30 days from now
 
         $sql = 'INSERT INTO remembered_logins (token_hash, user_id, expires_at)
@@ -566,9 +570,9 @@ class User extends \Core\Model
      */
     protected static function copyDefault($hashed_token) {
         $user = static::getUserByActivationToken($hashed_token);
-        Income::assignCategoriesToUser($user -> id);
-        Expense::assignCategoriesToUser($user -> id);
-        Expense::assignPaymentToUser($user -> id);
+        IncomeCategories::assignCategoriesToUser($user -> id);
+        ExpenseCategories::assignCategoriesToUser($user -> id);
+        ExpensePaymentMethods::assignPaymentToUser($user -> id);
     }
 
     /**
@@ -577,9 +581,9 @@ class User extends \Core\Model
      * @return void
      */
     public function getUserCategories() {
-        $this -> incomesCategories = Income::getUserCategories($this -> id);
-        $this -> expensesCategories = Expense::getUserCategories($this -> id);
-        $this -> paymentMethods = Expense::getUserPayment($this -> id);
+        $this -> incomesCategories = IncomeCategories::getUserCategories($this -> id);
+        $this -> expensesCategories = ExpenseCategories::getUserCategories($this -> id);
+        $this -> paymentMethods = ExpensePaymentMethods::getUserPayment($this -> id);
     }
 
     /**
@@ -588,8 +592,8 @@ class User extends \Core\Model
      * @return void
      */
     public function getShortSummary($startDate, $endDate) {
-        $this -> incomeSummary = Income::getShortSummary($this -> id, $startDate, $endDate);
-        $this -> expenseSummary = Expense::getShortSummary($this -> id, $startDate, $endDate);
+        $this -> incomeSummary = IncomeSummaries::getShortSummary($this -> id, $startDate, $endDate);
+        $this -> expenseSummary = ExpenseSummaries::getShortSummary($this -> id, $startDate, $endDate);
     }
 
     /**
@@ -598,8 +602,8 @@ class User extends \Core\Model
      * @return void
      */
     public function getFullSummary($startDate, $endDate) {
-        $this -> incomeFullSummary = Income::getFullSummary($this -> id, $startDate, $endDate);
-        $this -> expenseFullSummary = Expense::getFullSummary($this -> id, $startDate, $endDate);
+        $this -> incomeFullSummary = IncomeSummaries::getFullSummary($this -> id, $startDate, $endDate);
+        $this -> expenseFullSummary = ExpenseSummaries::getFullSummary($this -> id, $startDate, $endDate);
 
         $this -> expenseFullSummary = json_encode($this -> expenseFullSummary, JSON_NUMERIC_CHECK);
         $this -> expenseFullSummary = json_decode($this -> expenseFullSummary, true);

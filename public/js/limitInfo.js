@@ -1,5 +1,6 @@
 const categoryInput = document.querySelector("#category");
-let categoryLimit = 0;
+let categoryLimitValue = 0;
+let categoryLimitState = 0;
 let categorySummary = 0;
 
 const amountInput = document.querySelector("#amount");
@@ -29,13 +30,24 @@ try {
 }
 }
 
+const getLimitStateForCategory = async (category) => {
+    try {
+        const res = await fetch(`../api/limitState/${category}`);
+        const data = await res.json();
+        return data;
+    } catch (e) {
+        console.log('ERROR:', e)
+    }
+}
+
 const howMuchLeft = (limit, summary, enteredAmount) => {
     if(limit) {
         const limitCalculation = (Math.round((limit - summary - enteredAmount) * 100) / 100);
         if (limitCalculation >= 0) {
-            container.setAttribute("style", "color: green;");
+            container
+            container.setAttribute("style", "color: #198754;");
         } else {
-            container.setAttribute("style", "color: red;");
+            container.setAttribute("style", "color: #dc3545;");
         }
         return `${limitCalculation} PLN`;
     } else {
@@ -45,11 +57,19 @@ const howMuchLeft = (limit, summary, enteredAmount) => {
 }
 
 const getResult = () => {
-result.textContent = `Limit dla wybranej kategorii wynosi: ${categoryLimit} PLN, natomiast dotychczas w kategorii wydałeś: ${categorySummary} PLN. Możesz wydać jeszcze ${howMuchLeft(categoryLimit, categorySummary, enteredAmount)}.`;
+    if (categoryLimitState) {
+        result.textContent = `Limit dla wybranej kategorii wynosi: ${categoryLimitValue} PLN oraz jest aktywny. Dotychczas w kategorii wydałeś: ${categorySummary} PLN. Możesz wydać jeszcze ${howMuchLeft(categoryLimitValue, categorySummary, enteredAmount)}.`;
+    } else if (categoryLimitState == 0 && categoryLimitValue == null) {
+        result.textContent = `Limit dla wybranej kategorii nie został zdefiniowany.`;
+
+    } else {
+        result.textContent = `Limit dla wybranej kategorii wynosi: ${categoryLimitValue} PLN, jednak nie jest aktywny. Możesz wydać jeszcze ile chcesz.`;
+    }
 }
 
 onload = async () => {
-    categoryLimit = await getLimitForCategory(categoryInput.value);
+    categoryLimitValue = await getLimitForCategory(categoryInput.value);
+    categoryLimitState = await getLimitStateForCategory(categoryInput.value);
     categorySummary = await getSummaryForCategory(categoryInput.value);
     getResult();
 };
@@ -60,7 +80,8 @@ amountInput.oninput = (event) => {
 };
 
 categoryInput.oninput = async (event) => {
-    categoryLimit = await getLimitForCategory(event.target.value);
+    categoryLimitValue = await getLimitForCategory(event.target.value);
+    categoryLimitState = await getLimitStateForCategory(categoryInput.value);
     categorySummary = await getSummaryForCategory(event.target.value);
     getResult();
 };

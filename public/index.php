@@ -40,5 +40,6 @@ $router->add('password/reset/{token:[\da-f]+}', ['controller' => 'Password', 'ac
 $router->add('{controller}/{action}');
 $router->add('api/limit/{category:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}', ['controller' => 'Profile', 'action' => 'categoryLimit']);
 $router->add('api/limitSummary/{category:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}', ['controller' => 'Profile', 'action' => 'categoryLimitSummary']);
+$router->add('api/limitState/{category:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}', ['controller' => 'Profile', 'action' => 'categoryLimitState']);
     
 $router->dispatch($_SERVER['QUERY_STRING']);

@@ -3,12 +3,11 @@
 {% block title %}Resetowanie hasła{% endblock %}
 
 {% block navbar %}
-
     <!-- Navbar Section -->
     <section class="register">
-        <nav class="navbar">
+        <nav class="navbar darkMode">
             <div class="container-fluid">
-                <a class="navbar-brand"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
+                <a class="navbar-brand darkMode"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
                 {% for message in flash_messages %}
                     <p class="text-{{ message.type }} border border-{{ message.type }} flash">{{ message.body }}</p>
                 {% endfor %}
@@ -28,4 +27,15 @@
  
     </div>
         
+{% endblock %}
+
+{% block footer %}
+        <div class="footer fixed-bottom darkMode">
+            <section>
+                <footer>
+                    <p>Artur Staszewski 2023</p>
+                </footer>
+            </section>
+        </div>
+    </div>
 {% endblock %}
