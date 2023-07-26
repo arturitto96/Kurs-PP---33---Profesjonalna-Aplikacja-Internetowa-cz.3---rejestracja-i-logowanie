@@ -4,24 +4,33 @@
 
 {% block navbar %}
     <!-- Navbar Section -->
-    <section class="navbar">
+    <nav class="navbar fixed-top darkMode">
         <div class="container-fluid">
-            <a class="navbar-brand"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
-            {% for message in flash_messages %}
-                    <p class="text-{{ message.type }} border border-{{ message.type }} flash">{{ message.body }}</p>
-            {% endfor %}
-            <div>
-                <form action="/login/create" method="post" class="d-flex" >
-                    <input name="email" type="email" class="form-control navbar-input" placeholder="e-mail" value="{{ email }}">
-                    <input name="password" type="password" class="form-control navbar-input" placeholder="hasło">
-                    <button class="btn btn-outline-success navbar-btn" type="submit">Zaloguj</button>
-                    <a href="/password/forgot">
-                        <button class="btn btn-outline-light forgot-psswrd-btn" type="button">Zapomniałeś hasła?</button>
-                    </a>
+            <a class="navbar-brand darkMode"><i class="fa-sharp fa-solid fa-coins navbar-img"></i>smartBudget</a>
+            <div class="flashVisibility">
+                {% for message in flash_messages %}
+                <p class="text-{{ message.type }} border border-{{ message.type }} flash">{{ message.body }}</p>
+                {% endfor %}
+            </div>
+            <form class="loginSection" action="/login/create" method="post" class="d-flex" >
+                <input name="email" type="email" class="form-control navbarInput" placeholder="e-mail" value="{{ email }}" required>
+                <input name="password" type="password" class="form-control navbarInput" placeholder="hasło" required>
+                <button class="btn btn-outline-success navbarBtn" type="submit">Zaloguj</button>
+                <a class="btn btn-outline-light forgotBtn" href="/password/forgot" role="button">Zapomniałeś hasła?</a>
+            </form>
+            <a class="hamburgerMenuBtn darkMode" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                <i class="fa-solid fa-circle-chevron-down fa-2xl"></i>
+            </a>
+            <div class="collapse navbar-collapse hamburgerMenuIndex" id="collapseExample">
+                <form action="/login/create" method="post">
+                    <input name="email" type="email" class="form-control hamburgerMenuInput" placeholder="e-mail" value="{{ email }}" required>
+                    <input name="password" type="password" class="form-control hamburgerMenuInput" placeholder="hasło" required>
+                    <button class="btn btn-outline-success hamburgerMenuCollapseBtn" type="submit">Zaloguj</button>
                 </form>
+                <a class="btn btn-outline-light hamburgerMenuCollapseBtn" href="/password/forgot" role="button">Zapomniałeś hasła?</a>
             </div>
         </div>
-    </section>
+    </nav>
 {% endblock %}
 
 {% block sidebar %}
@@ -29,10 +38,10 @@
 
 {% block actionArea %}
     <!-- Information Section -->
-    <section>
-        <div class="row information-section">
+    <section class="infoSection">
+        <div class="row">
             <div class="col-lg-4">
-                <div class="infoHomeBox">
+                <div class="infoHomeBox darkMode">
                     <a class="information" href="https://businessinsider.com.pl/poradnik-finansowy/oszczedzanie/dlaczego-warto-oszczedzac-i-jak-skutecznie-ograniczyc-biezace-wydatki/nbb6z6s">
                         <i class="fa-sharp fa-solid fa-piggy-bank fa-10x"></i>
                         <h3 class="infoHeader">Dlaczego warto oszczędzać pieniądze?</h3>
@@ -44,7 +53,7 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="infoHomeBox">
+                <div class="infoHomeBox darkMode">
                     <a class="information" href="https://businessinsider.com.pl/twoje-pieniadze/na-co-warto-wydawac-pieniadze/zln3qxz">
                         <i class="fa-sharp fa-solid fa-plane-departure fa-10x"></i>
                         <h3 class="infoHeader">Na co przeznaczyć zaoszczędzone pieniądze?</h3>
@@ -58,7 +67,7 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="infoHomeBox">
+                <div class="infoHomeBox darkMode">
                     <div class="information">
                         <i class="fa-sharp fa-solid fa-user-tie fa-10x"></i>
                         <h3 class="infoHeader">Zarejestruj się za darmo i zrób to z nami!</h3>
@@ -68,10 +77,21 @@
                             <li><h5>Łatwość w obsłudze!</h5></li>
                             <li><h5>Wsparcie na całym świecie!</h5></li>
                         </ul>
-                        <a class="btn btn-success register-btn" href="/signup/new">Darmowa rejestracja</a>
                     </div>
+                    <a class="btn btn-success registerBtn" href="/signup/new">Darmowa rejestracja</a>
                 </div>
             </div>
         </div>
     </section>
 {% endblock %}
+
+{% block footer %}
+        <div class="footer fixed-bottom darkMode">
+            <section>
+                <footer>
+                    <p>Artur Staszewski 2023</p>
+                </footer>
+            </section>
+        </div>
+    </div>
+    {% endblock %}

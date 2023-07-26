@@ -33,7 +33,7 @@
                     </ul>
                 {% endif %}
             </select>
-            <textarea name="comment" class="form-control setupDataInput comentaryInput" rows="3" placeholder="Komentarz (opcjonalnie)"></textarea>
+            <textarea name="comment" class="form-control setupDataInput comentaryInput" rows="2" placeholder="Komentarz (opcjonalnie)"></textarea>
             <button class="btn btn-success submitBtn" type="submit">Dodaj</button>
         </form>
     </div>
@@ -47,5 +47,9 @@
     {% endfor %}
 </ul>
 {% endif %}
-<script src="/js/limit.js"></script>
 {% endblock %}
+
+{% block scripts %}
+<script src="/js/limitInfo.js"></script>
+{% endblock %}
+

@@ -5,8 +5,12 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Auth;
 use \App\Flash;
-use App\Models\Income;
-use App\Models\Expense;
+use \App\Models\Income;
+use \App\Models\IncomeCategories;
+use \App\Models\Expense;
+use \App\Models\ExpenseCategories;
+use \App\Models\ExpensePaymentMethods;
+use \App\Models\CategoryLimit;
 
 /**
  * Profile controller
@@ -228,7 +232,7 @@ class Profile extends Authenticated {
      */
     public function updateCategoryAction() {
         if ($_POST['type'] == 'income') {
-            if (Income::editCategoryName($_POST, $this -> user -> id)) {
+            if (IncomeCategories::editCategoryName($_POST, $this -> user -> id)) {
                 Flash::addMessage('Pomyślnie zapisano zmianę nazwy kategorii');
                 $this -> redirect('/profile/editIncomesCategory');
             } else {
@@ -236,7 +240,7 @@ class Profile extends Authenticated {
                 $this -> redirect('/profile/editIncomesCategory');
             }
         } else if ($_POST['type'] == 'expense') {
-            if (Expense::editCategory($_POST, $this -> user -> id)) {
+            if (ExpenseCategories::editCategory($_POST, $this -> user -> id)) {
                 Flash::addMessage('Pomyślnie zapisano zmianę nazwy kategorii');
                 $this -> redirect('/profile/editExpensesCategory');
             } else {
@@ -256,7 +260,7 @@ class Profile extends Authenticated {
      */
     public function saveNewPaymentNameAction() {
         if ($_POST['type'] == 'payment') {
-            if (Expense::editPaymentName($_POST, $this -> user -> id)) {
+            if (ExpensePaymentMethods::editPaymentName($_POST, $this -> user -> id)) {
                 Flash::addMessage('Pomyślnie zapisano zmianę nazwy metody płatności');
                 $this -> redirect('/profile/editPaymentMethods');
             } else {
@@ -276,7 +280,7 @@ class Profile extends Authenticated {
      */
     public function deleteCategoryAction() {
         if ($_POST['type'] == 'income') {
-            if (Income::deleteCategory($_POST, $this -> user -> id)) {
+            if (IncomeCategories::deleteCategory($_POST, $this -> user -> id)) {
                 Flash::addMessage('Pomyślnie usunięto kategorię');
                 $this -> redirect('/profile/editIncomesCategory');
             } else {
@@ -285,7 +289,7 @@ class Profile extends Authenticated {
             }
             
         } else if ($_POST['type'] == 'expense') {
-            if (Expense::deleteCategory($_POST, $this -> user -> id)) {
+            if (ExpenseCategories::deleteCategory($_POST, $this -> user -> id)) {
                 Flash::addMessage('Pomyślnie usunięto kategorię');
                 $this -> redirect('/profile/editExpensesCategory');
             } else {
@@ -305,7 +309,7 @@ class Profile extends Authenticated {
      */
     public function deletePaymentAction() {
         if ($_POST['type'] == 'payment') {
-            if (Expense::deletePayment($_POST, $this -> user -> id)) {
+            if (ExpensePaymentMethods::deletePayment($_POST, $this -> user -> id)) {
                 Flash::addMessage('Pomyślnie usunięto metodę płatności');
                 $this -> redirect('/profile/editPaymentMethods');
             } else {
@@ -325,7 +329,7 @@ class Profile extends Authenticated {
      */
     public function saveNewCategoryAction() {
         if ($_POST['type'] == 'income') {
-            if (Income::saveNewCategory($_POST, $this -> user -> id)) {
+            if (IncomeCategories::saveNewCategory($_POST, $this -> user -> id)) {
                 Flash::addMessage('Pomyślnie zapisano nową kategorię');
                 $this -> redirect('/profile/editIncomesCategory');
             } else {
@@ -333,7 +337,7 @@ class Profile extends Authenticated {
                 $this -> redirect('/profile/editIncomesCategory');
             }
         } else if ($_POST['type'] == 'expense') {
-            if (Expense::saveNewCategory($_POST, $this -> user -> id)) {
+            if (ExpenseCategories::saveNewCategory($_POST, $this -> user -> id)) {
                 Flash::addMessage('Pomyślnie zapisano nową kategorię');
                 $this -> redirect('/profile/editExpensesCategory');
             } else {
@@ -353,7 +357,7 @@ class Profile extends Authenticated {
      */
     public function saveNewPaymentAction() {
         if ($_POST['type'] == 'payment') {
-            if (Expense::saveNewPayment($_POST, $this -> user -> id)) {
+            if (ExpensePaymentMethods::saveNewPayment($_POST, $this -> user -> id)) {
                 Flash::addMessage('Pomyślnie zapisano nową metodę płatności');
                 $this -> redirect('/profile/editPaymentMethods');
             } else {
@@ -374,7 +378,7 @@ class Profile extends Authenticated {
     public function categoryLimitAction() {
         $categoryName = $this -> route_params['category'];
 
-        echo json_encode(Expense::getCategoryLimit($categoryName, $this -> user -> id), JSON_UNESCAPED_UNICODE);
+        echo json_encode(CategoryLimit::getCategoryLimit($categoryName, $this -> user -> id), JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -386,7 +390,7 @@ class Profile extends Authenticated {
         $categoryName = $this -> route_params['category'];
         $month = substr($this -> todayDate, 4, -2);
 
-        echo json_encode(Expense::getCategorySummary($categoryName, $month, $this -> user -> id), JSON_UNESCAPED_UNICODE);
+        echo json_encode(CategoryLimit::getCategorySummary($categoryName, $month, $this -> user -> id), JSON_UNESCAPED_UNICODE);
     }
 
      /**
@@ -404,6 +408,32 @@ class Profile extends Authenticated {
             $this -> redirect('/profile/show');
         }
         
+    }
+
+    /**
+     * Gets the current state of limit for category
+     * 
+     * @return boolean Limit state
+     */
+    public function categoryLimitStateAction() {
+        $categoryName = $this -> route_params['category'];
+
+        echo json_encode(CategoryLimit::getCategoryLimitState($categoryName, $this -> user -> id), JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * Gets the current state of limit for category
+     * 
+     * @return boolean Limit state
+     */
+    public function activateLimitAction() {
+        if (CategoryLimit::setLimitState($_POST['categoryName'], $_POST['currentLimitState'], $this -> user -> id)) {
+            Flash::addMessage('Pomyślnie zaaktualizowano stan limitu');
+            $this -> redirect('/profile/editExpensesCategory');
+        } else {
+            Flash::addMessage('Nie udało się zapisać zmian', FLASH::WARNING);
+            $this -> redirect('/profile/editExpensesCategory');
+        }
     }
 }
 
