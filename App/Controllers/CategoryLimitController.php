@@ -4,9 +4,10 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Auth;
-use \App\Controllers\Profile;
 use \App\Flash;
+use \App\Controllers\UserProfile;
 use \App\Models\CategoryLimit;
+use \App\SupplementaryMethods;
 
 /**
  * CategoryLimitController controller
@@ -14,7 +15,7 @@ use \App\Models\CategoryLimit;
  * PHP version 7.0
  */
 class CategoryLimitController extends Profile {
-// class CategoryLimitController extends Authenticated
+
     private $user;
 
     private $todayDate;
@@ -27,17 +28,8 @@ class CategoryLimitController extends Profile {
     public function before() {
         parent::before();
 
-        $this -> getTodayDate();
+        $this -> todayDate = SupplementaryMethods::getTodayDate();
         $this -> user = Auth::getUser();
-    }
-
-    /**
-     * Get the today date
-     *
-     * @return void
-     */
-    protected function getTodayDate() {
-        $this -> todayDate = date("Y-m-d");
     }
 
     /**

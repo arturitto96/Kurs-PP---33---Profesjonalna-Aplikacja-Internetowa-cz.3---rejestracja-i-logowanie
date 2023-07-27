@@ -5,13 +5,13 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Auth;
 use \App\Flash;
+use \App\SupplementaryMethods;
 use \App\Models\Income;
 use \App\Models\IncomeCategories;
 use \App\Models\Expense;
 use \App\Models\ExpenseCategories;
 use \App\Models\ExpensePaymentMethods;
 use \App\Models\CategoryLimit;
-
 /**
  * Profile controller
  * 
@@ -41,8 +41,8 @@ class Profile extends Authenticated {
     public function before() {
         parent::before();
 
-        $this -> getTodayDate();
-        $this -> getFirstDateOfThisMonth();
+        $this -> todayDate = SupplementaryMethods::getTodayDate();
+        $this -> firstDate = SupplementaryMethods::getFirstDateOfThisMonth();
         $this -> user = Auth::getUser();
         $this -> user -> getUserCategories();
         $this -> user -> getShortSummary($this -> firstDate, $this -> todayDate);
@@ -177,24 +177,6 @@ class Profile extends Authenticated {
                                                                 'today' => $this -> todayDate, 
                                                                 'mode' => $this -> getUserMode()]);
         }
-    }
-
-    /**
-     * Get the today date
-     *
-     * @return void
-     */
-    protected function getTodayDate() {
-        $this -> todayDate = date("Y-m-d");
-    }
-
-    /**
-     * Get the date of first day of this month
-     *
-     * @return void
-     */
-    protected function getFirstDateOfThisMonth() {
-        $this -> firstDate = date('Y') . '-' . date('m') . '-01';
     }
 
     /**
