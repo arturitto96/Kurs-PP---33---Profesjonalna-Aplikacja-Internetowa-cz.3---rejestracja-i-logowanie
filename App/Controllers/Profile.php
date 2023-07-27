@@ -370,29 +370,6 @@ class Profile extends Authenticated {
         }
     }
 
-    /**
-     * Gets the limit value for category
-     * 
-     * @return float Limit value
-     */
-    public function categoryLimitAction() {
-        $categoryName = $this -> route_params['category'];
-
-        echo json_encode(CategoryLimit::getCategoryLimit($categoryName, $this -> user -> id), JSON_UNESCAPED_UNICODE);
-    }
-
-    /**
-     * Gets the summary for selected category in this month
-     * 
-     * @return float Summary
-     */
-    public function categoryLimitSummaryAction() {
-        $categoryName = $this -> route_params['category'];
-        $month = substr($this -> todayDate, 4, -2);
-
-        echo json_encode(CategoryLimit::getCategorySummary($categoryName, $month, $this -> user -> id), JSON_UNESCAPED_UNICODE);
-    }
-
      /**
      * Toggle between dark and light mode of app
      * 
@@ -408,32 +385,6 @@ class Profile extends Authenticated {
             $this -> redirect('/profile/show');
         }
         
-    }
-
-    /**
-     * Gets the current state of limit for category
-     * 
-     * @return boolean Limit state
-     */
-    public function categoryLimitStateAction() {
-        $categoryName = $this -> route_params['category'];
-
-        echo json_encode(CategoryLimit::getCategoryLimitState($categoryName, $this -> user -> id), JSON_UNESCAPED_UNICODE);
-    }
-
-    /**
-     * Gets the current state of limit for category
-     * 
-     * @return boolean Limit state
-     */
-    public function activateLimitAction() {
-        if (CategoryLimit::setLimitState($_POST['categoryName'], $_POST['currentLimitState'], $this -> user -> id)) {
-            Flash::addMessage('Pomyślnie zaaktualizowano stan limitu');
-            $this -> redirect('/profile/editExpensesCategory');
-        } else {
-            Flash::addMessage('Nie udało się zapisać zmian', FLASH::WARNING);
-            $this -> redirect('/profile/editExpensesCategory');
-        }
     }
 }
 
