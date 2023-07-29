@@ -12,6 +12,7 @@ use \App\Models\Expense;
 use \App\Models\ExpenseCategories;
 use \App\Models\ExpensePaymentMethods;
 use \App\Models\CategoryLimit;
+
 /**
  * Profile controller
  * 
@@ -111,29 +112,6 @@ class Profile extends Authenticated {
     }
 
     /**
-     * Show the new income page
-     *
-     * @return void
-     */
-    public function newIncomeAction() {
-        View::renderTemplate('Profile/newIncome.html', ['user' => $this -> user, 'today' => $this -> todayDate, 'mode' => $this -> getUserMode()]);
-    }
-
-     /**
-     * Save the income data
-     *
-     * @return void
-     */
-    public function saveIncomeAction() {
-        Income::saveIncome($_POST);
-
-        Flash::addMessage('Pomyślnie dodano przychód');
-
-        $this -> redirect('/profile/show');
-
-    }
-
-    /**
      * Show the new expense page
      *
      * @return void
@@ -180,16 +158,6 @@ class Profile extends Authenticated {
     }
 
     /**
-     * Show the form for editing the user incomes categories
-     * 
-     * @return void
-     */
-    public function editIncomesCategoryAction() {
-        View::renderTemplate('Profile/editIncomes.html', ['user' => $this -> user, 'mode' => $this -> getUserMode()]);
-    }
-
-
-    /**
      * Show the form for editing the user expenses categories
      * 
      * @return void
@@ -213,15 +181,7 @@ class Profile extends Authenticated {
      * @return void
      */
     public function updateCategoryAction() {
-        if ($_POST['type'] == 'income') {
-            if (IncomeCategories::editCategoryName($_POST, $this -> user -> id)) {
-                Flash::addMessage('Pomyślnie zapisano zmianę nazwy kategorii');
-                $this -> redirect('/profile/editIncomesCategory');
-            } else {
-                Flash::addMessage('Nie udało się zapisać zmiany', FLASH::WARNING);
-                $this -> redirect('/profile/editIncomesCategory');
-            }
-        } else if ($_POST['type'] == 'expense') {
+        if ($_POST['type'] == 'expense') {
             if (ExpenseCategories::editCategory($_POST, $this -> user -> id)) {
                 Flash::addMessage('Pomyślnie zapisano zmianę nazwy kategorii');
                 $this -> redirect('/profile/editExpensesCategory');
@@ -261,16 +221,7 @@ class Profile extends Authenticated {
      * @return void
      */
     public function deleteCategoryAction() {
-        if ($_POST['type'] == 'income') {
-            if (IncomeCategories::deleteCategory($_POST, $this -> user -> id)) {
-                Flash::addMessage('Pomyślnie usunięto kategorię');
-                $this -> redirect('/profile/editIncomesCategory');
-            } else {
-                Flash::addMessage('Nie udało się usunąć wybranej kategorii', FLASH::WARNING);
-                $this -> redirect('/profile/editIncomesCategory');
-            }
-            
-        } else if ($_POST['type'] == 'expense') {
+        if ($_POST['type'] == 'expense') {
             if (ExpenseCategories::deleteCategory($_POST, $this -> user -> id)) {
                 Flash::addMessage('Pomyślnie usunięto kategorię');
                 $this -> redirect('/profile/editExpensesCategory');
@@ -310,15 +261,7 @@ class Profile extends Authenticated {
      * @return void
      */
     public function saveNewCategoryAction() {
-        if ($_POST['type'] == 'income') {
-            if (IncomeCategories::saveNewCategory($_POST, $this -> user -> id)) {
-                Flash::addMessage('Pomyślnie zapisano nową kategorię');
-                $this -> redirect('/profile/editIncomesCategory');
-            } else {
-                Flash::addMessage('Nie udało się zapisać zmian', FLASH::WARNING);
-                $this -> redirect('/profile/editIncomesCategory');
-            }
-        } else if ($_POST['type'] == 'expense') {
+        if ($_POST['type'] == 'expense') {
             if (ExpenseCategories::saveNewCategory($_POST, $this -> user -> id)) {
                 Flash::addMessage('Pomyślnie zapisano nową kategorię');
                 $this -> redirect('/profile/editExpensesCategory');
