@@ -34,7 +34,11 @@
                 $stmt->bindValue(':expense_comment', $expense['comment'], PDO::PARAM_STR);
             }
 
-            $stmt->execute();
+            if ($stmt->execute()) {
+                return 1;
+            } else {
+                return 0;
+            }
         }
 
         /**

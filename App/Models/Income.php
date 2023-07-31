@@ -32,7 +32,11 @@
                 $stmt->bindValue(':income_comment', $income['comment'], PDO::PARAM_STR);
             }
 
-            $stmt->execute();
+            if ($stmt->execute()) {
+                return 1;
+            } else {
+                return 0;
+            }
         }
 
         /**

@@ -25,7 +25,6 @@
                 <i class="fa-solid fa-circle-xmark fa-xl"></i>
             </a>
             <h5><i id="selectedCategoryName">"Wybierz kategorię"</i></h5>
-            <!-- <button class="btn btn-outline-success btn-delete" type="button" data-bs-toggle="modal" data-bs-target="#activateLimitModal">Limit: 500.00 PLN</button> -->
             <button class="btn btn-outline-warning editCategoryBtn" type="button" data-bs-toggle="modal" data-bs-target="#editModal">Edytuj</button>
         </div>
     </div>
@@ -38,9 +37,9 @@
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">Dodawanie nowej kategorii</h1>
         </div>
-            <form action="/profile/saveNewCategory" method="post">
+            <form action="/IncomeCategoriesController/saveNewCategory" method="post">
                 <div class="modal-body">
-                    <input name="type" type="hidden" value="income" />
+                    <!-- <input name="type" type="hidden" value="income" /> -->
                     <p>Podaj nazwę nowej kategorii:</p>
                     <input name="newCategoryName" type="text" class="form-control editCategoryInput" placeholder="Nazwa nowej kategorii" required>
                 </div>
@@ -60,9 +59,9 @@
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">Zmiana nazwy kategorii przychodu</h1>
         </div>
-            <form action="/profile/updateCategory" method="post">
+            <form action="/IncomeCategoriesController/updateCategory" method="post">
                 <div class="modal-body">
-                    <input name="type" type="hidden" value="income" />
+                    <!-- <input name="type" type="hidden" value="income" /> -->
                     <p>Wybrałeś do edycji kategorię <span id="selectedCategoryName"></span>. Podaj nową nazwę dla wybranej kategorii:</p>
                     <input id="hiddenInput" name="oldCategoryName" type="hidden" />
                     <input name="newCategoryName" type="text" class="form-control editCategoryInput" placeholder="Nowa nazwa kategorii" required>
@@ -83,7 +82,7 @@
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">Usunięcie kategorii</h1>
         </div>
-            <form action="/profile/deleteCategory" method="post">
+            <form action="/IncomeCategoriesController/deleteCategory" method="post">
                 <div class="modal-body">
                     <p>Wybrałeś do usunięcia kategorię <span id="selectedCategoryName"></span>. Wybierz nazwę kategorii, którą przypisać do już dodanych przychodów:</p>
                     <input name="type" type="hidden" value="income" />
