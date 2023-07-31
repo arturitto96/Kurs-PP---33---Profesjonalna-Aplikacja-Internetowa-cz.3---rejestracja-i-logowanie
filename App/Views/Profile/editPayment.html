@@ -20,9 +20,8 @@
         <div class="modal-header">
           <h1 class="modal-title fs-5 text-dark bg-white" id="exampleModalLabel">Dodawanie nowej metody płatności</h1>
         </div>
-            <form action="/profile/saveNewPayment" method="post">
+            <form action="/ExpensePaymentMethodsController/saveNewPayment" method="post">
                 <div class="modal-body">
-                    <input name="type" type="hidden" value="payment" />
                     <p class="text-dark bg-white">Podaj nazwę nowej metody płatności:</p>
                     <input name="newPaymentName" type="text" class="form-control my-input" placeholder="Nazwa nowej metody płatności" required>
                 </div>
@@ -42,9 +41,8 @@
         <div class="modal-header">
           <h1 class="modal-title fs-5 text-dark bg-white" id="exampleModalLabel">Zmiana nazwy metody płatności</h1>
         </div>
-            <form action="/profile/saveNewPaymentName" method="post">
+            <form action="/ExpensePaymentMethodsController/saveNewPaymentName" method="post">
                 <div class="modal-body">
-                    <input name="type" type="hidden" value="payment" />
                     <p class="text-dark bg-white">Wybierz nazwę metody, którą chcesz edytować:</p>
                     <select name="oldPaymentName" class="form-select my-input" placeholder="Kategoria" required>
                         {% if user.paymentMethods is not empty %}
@@ -75,9 +73,8 @@
         <div class="modal-header">
           <h1 class="modal-title fs-5 text-dark bg-white" id="exampleModalLabel">Usunięcie metody płatności</h1>
         </div>
-            <form action="/profile/deletePayment" method="post">
+            <form action="/ExpensePaymentMethodsController/deletePayment" method="post">
                 <div class="modal-body">
-                    <input name="type" type="hidden" value="payment" />
                     <p class="text-dark bg-white">Wybierz nazwę kategorii, którą chcesz usunąć:</p>
                     <select name="deletePayment" class="form-select my-input" placeholder="Metoda płatności" required>
                         {% if user.paymentMethods is not empty %}

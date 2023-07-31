@@ -112,75 +112,6 @@ class Profile extends Authenticated {
     }
 
     /**
-     * Show the form for editing the user payment methods
-     * 
-     * @return void
-     */
-    public function editPaymentMethodsAction() {
-        View::renderTemplate('Profile/editPayment.html', ['user' => $this -> user, 'mode' => $this -> getUserMode()]);
-    }
-
-    /**
-     * Save new name for selected payment method
-     * 
-     * @return void
-     */
-    public function saveNewPaymentNameAction() {
-        if ($_POST['type'] == 'payment') {
-            if (ExpensePaymentMethods::editPaymentName($_POST, $this -> user -> id)) {
-                Flash::addMessage('Pomyślnie zapisano zmianę nazwy metody płatności');
-                $this -> redirect('/profile/editPaymentMethods');
-            } else {
-                Flash::addMessage('Nie udało się zapisać zmiany', FLASH::WARNING);
-                $this -> redirect('/profile/editPaymentMethods');
-            }
-        } else {
-            Flash::addMessage('Coś poszło nie tak', FLASH::WARNING);
-            $this -> redirect('/profile/show');
-        }
-    }
-
-    /**
-     * Delete selected payment method
-     * 
-     * @return void
-     */
-    public function deletePaymentAction() {
-        if ($_POST['type'] == 'payment') {
-            if (ExpensePaymentMethods::deletePayment($_POST, $this -> user -> id)) {
-                Flash::addMessage('Pomyślnie usunięto metodę płatności');
-                $this -> redirect('/profile/editPaymentMethods');
-            } else {
-                Flash::addMessage('Nie udało się usunąć wybranej kategorii', FLASH::WARNING);
-                $this -> redirect('/profile/editPaymentMethods');
-            }
-        } else {
-            Flash::addMessage('Coś poszło nie tak', FLASH::WARNING);
-            $this -> redirect('/profile/show');
-        }
-    }
-
-    /**
-     * Save new payment method
-     * 
-     * @return void
-     */
-    public function saveNewPaymentAction() {
-        if ($_POST['type'] == 'payment') {
-            if (ExpensePaymentMethods::saveNewPayment($_POST, $this -> user -> id)) {
-                Flash::addMessage('Pomyślnie zapisano nową metodę płatności');
-                $this -> redirect('/profile/editPaymentMethods');
-            } else {
-                Flash::addMessage('Nie udało się zapisać zmian', FLASH::WARNING);
-                $this -> redirect('/profile/editPaymentMethods');
-            }
-        } else {
-            Flash::addMessage('Coś poszło nie tak', FLASH::WARNING);
-            $this -> redirect('/profile/show');
-        }
-    }
-
-     /**
      * Toggle between dark and light mode of app
      * 
      * @return boolean mode
@@ -194,7 +125,6 @@ class Profile extends Authenticated {
             Flash::addMessage('Nie udało się zapisać zmian', FLASH::WARNING);
             $this -> redirect('/profile/show');
         }
-        
     }
 }
 
