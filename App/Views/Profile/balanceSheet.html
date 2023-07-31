@@ -104,7 +104,7 @@
             <div class="modal-header">
                 <h1 class="modal-title fs-5 text-dark bg-white" id="exampleModalLabel">Zmiana okresu dla bilansu</h1>
             </div>
-                <form action="/profile/showBalanceSheet" method="post">
+                <form action="/Summary/showBalanceSheet" method="post">
                     <div class="modal-body">
                             <p class="text-dark bg-white">Data początkowa okresu:</p>
                             <input id="startDate" name="startDate" type="date" class="form-control my-input" min="2000-01-01" max="{{ today }}" value="{{ start }}" required>

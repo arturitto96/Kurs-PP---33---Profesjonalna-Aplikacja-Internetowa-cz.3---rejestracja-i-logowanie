@@ -112,29 +112,6 @@ class Profile extends Authenticated {
     }
 
     /**
-     * Show the balance sheet
-     *
-     * @return void
-     */
-    public function showBalanceSheetAction() {
-        if (empty($_POST)) {
-            $this -> user -> getFullSummary($this -> firstDate, $this -> todayDate);
-            View::RenderTemplate('Profile/balanceSheet.html', [ 'user' => $this -> user, 
-                                                                'start' => $this -> firstDate, 
-                                                                'end' => $this -> todayDate,
-                                                                'today' => $this -> todayDate, 
-                                                                'mode' => $this -> getUserMode()]);
-        } else {
-            $this -> user -> getFullSummary($_POST['startDate'], $_POST['endDate']);    
-            View::RenderTemplate('Profile/balanceSheet.html', [ 'user' => $this -> user, 
-                                                                'start' => $_POST['startDate'], 
-                                                                'end' => $_POST['endDate'],
-                                                                'today' => $this -> todayDate, 
-                                                                'mode' => $this -> getUserMode()]);
-        }
-    }
-
-    /**
      * Show the form for editing the user payment methods
      * 
      * @return void

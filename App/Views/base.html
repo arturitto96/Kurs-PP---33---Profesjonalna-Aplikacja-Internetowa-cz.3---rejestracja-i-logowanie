@@ -30,14 +30,14 @@
                 <a class="btn btn-outline-danger navbar-btn" href="/logout">Wyloguj</a>
 				<div class="collapse navbar-collapse hamburgerMenu" id="collapseExample">
 					<ul class="side-navbar">
-                        <a class="{{mode}}Mode" href="/profile/newIncome"><li><i class="fa-sharp fa-solid fa-plus"></i> Dodaj przychód</li></a>
-                        <a class="{{mode}}Mode" href="/profile/newExpense"><li><i class="fa-sharp fa-solid fa-minus"></i> Dodaj wydatek</li></a>
-                        <a class="{{mode}}Mode" href="/profile/showBalanceSheet"><li><i class="fa-solid fa-sheet-plastic"></i></i> Wyświetl bilans</li></a>
-                        <a class="{{mode}}Mode" href="/profile/editIncomesCategory"><li class="{{mode}}Mode"><i class="fa-solid fa-arrow-down"></i> Przychodów</li></a>
-                        <a class="{{mode}}Mode" href="/profile/editExpensesCategory"><li class="{{mode}}Mode"><i class="fa-solid fa-arrow-up"></i> Wydatków</li></a>
+                        <a class="{{mode}}Mode" href="/IncomeController/newIncome"><li><i class="fa-sharp fa-solid fa-plus"></i> Dodaj przychód</li></a>
+                        <a class="{{mode}}Mode" href="/ExpenseController/newExpense"><li><i class="fa-sharp fa-solid fa-minus"></i> Dodaj wydatek</li></a>
+                        <a class="{{mode}}Mode" href="/Summary/showBalanceSheet"><li><i class="fa-solid fa-sheet-plastic"></i></i> Wyświetl bilans</li></a>
+                        <a class="{{mode}}Mode" href="/IncomeCategoriesController/editIncomeCategories"><li class="{{mode}}Mode"><i class="fa-solid fa-arrow-down"></i> Przychodów</li></a>
+                        <a class="{{mode}}Mode" href="/ExpenseCategoriesController/editExpenseCategories"><li class="{{mode}}Mode"><i class="fa-solid fa-arrow-up"></i> Wydatków</li></a>
                         <a class="{{mode}}Mode" href="/profile/editPaymentMethods"><li class="{{mode}}Mode"><i class="fa-solid fa-money-bills"></i> Płatności</li></a>
-                        <a class="{{mode}}Mode" href="/profile/editUser"><li class="{{mode}}Mode"><i class="fa-solid fa-user-gear"></i> Dane użytkownika</li></a>
-                        <a class="{{mode}}Mode" href="/profile/toggleMode"><li class="{{mode}}Mode"><i class="fa-solid fa-sun"></i></i> Motyw: 
+                        <a class="{{mode}}Mode" href="/Profile/editUser"><li class="{{mode}}Mode"><i class="fa-solid fa-user-gear"></i> Dane użytkownika</li></a>
+                        <a class="{{mode}}Mode" href="/Profile/toggleMode"><li class="{{mode}}Mode"><i class="fa-solid fa-sun"></i></i> Motyw: 
                             {% if user.app_mode == true %}
                                 ciemny
                             {% else %}
@@ -58,15 +58,15 @@
                 <ul class="side-navbar">
                     <a class="{{mode}}Mode" href="/IncomeController/newIncome"><li><i class="fa-sharp fa-solid fa-plus"></i> Dodaj przychód</li></a>
                     <a class="{{mode}}Mode" href="/ExpenseController/newExpense"><li><i class="fa-sharp fa-solid fa-minus"></i> Dodaj wydatek</li></a>
-                    <a class="{{mode}}Mode" href="/profile/showBalanceSheet"><li><i class="fa-solid fa-sheet-plastic"></i></i> Wyświetl bilans</li></a>
+                    <a class="{{mode}}Mode" href="/Summary/showBalanceSheet"><li><i class="fa-solid fa-sheet-plastic"></i></i> Wyświetl bilans</li></a>
                     <div class="dropdown-center">
                         <a class="{{mode}}Mode" href="" data-bs-toggle="dropdown" aria-expanded="false"><li><i class="fa-sharp fa-solid fa-gear"></i> Ustawienia</li></a>
                         <ul class="dropdown-menu">
                             <a class="dropdown-item" href="/IncomeCategoriesController/editIncomeCategories"><li class="{{mode}}Mode"><i class="fa-solid fa-arrow-down"></i> Przychodów</li></a>
                             <a class="dropdown-item" href="/ExpenseCategoriesController/editExpenseCategories"><li class="{{mode}}Mode"><i class="fa-solid fa-arrow-up"></i> Wydatków</li></a>
                             <a class="dropdown-item" href="/profile/editPaymentMethods"><li class="{{mode}}Mode"><i class="fa-solid fa-money-bills"></i> Płatności</li></a>
-                            <a class="dropdown-item" href="/profile/editUser"><li class="{{mode}}Mode"><i class="fa-solid fa-user-gear"></i> Dane użytkownika</li></a>
-                            <a class="dropdown-item" href="/profile/toggleMode"><li class="{{mode}}Mode"><i class="fa-solid fa-sun"></i></i> Motyw: 
+                            <a class="dropdown-item" href="/Profile/editUser"><li class="{{mode}}Mode"><i class="fa-solid fa-user-gear"></i> Dane użytkownika</li></a>
+                            <a class="dropdown-item" href="/Profile/toggleMode"><li class="{{mode}}Mode"><i class="fa-solid fa-sun"></i></i> Motyw: 
                                 {% if user.app_mode == true %}
                                     ciemny
                                 {% else %}
@@ -74,7 +74,6 @@
                                 {% endif %}
                             </li></a>
                         </ul>
-                        
                     </div>
                 </ul>
                 </nav>
