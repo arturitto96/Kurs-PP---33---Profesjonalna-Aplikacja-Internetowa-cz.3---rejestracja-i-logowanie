@@ -8,6 +8,7 @@ use \App\Flash;
 use \App\Controllers\UserProfile;
 use \App\Models\CategoryLimit;
 use \App\SupplementaryMethods;
+use \App\Controllers\ExpenseCategoriesController;
 
 /**
  * CategoryLimitController controller
@@ -73,11 +74,11 @@ class CategoryLimitController extends Profile {
      */
     public function activateLimitAction() {
         if (CategoryLimit::setLimitState($_POST['categoryName'], $_POST['currentLimitState'], $this -> user -> id)) {
-            Flash::addMessage('Pomyślnie zaaktualizowano stan limitu');
-            $this -> redirect('/profile/editExpensesCategory');
+            Flash::addMessage('Sukces');
+            $this -> redirect('/ExpenseCategoriesController/editExpenseCategories');
         } else {
-            Flash::addMessage('Nie udało się zapisać zmian', FLASH::WARNING);
-            $this -> redirect('/profile/editExpensesCategory');
+            Flash::addMessage('Niepowodzenie', FLASH::WARNING);
+            $this -> redirect('/ExpenseCategoriesController/editExpenseCategories');
         }
     }
 }

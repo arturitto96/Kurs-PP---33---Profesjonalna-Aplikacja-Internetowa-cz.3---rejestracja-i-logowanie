@@ -8,7 +8,7 @@ use \App\Flash;
 use \App\Models\IncomeCategories;
 
 /**
- * Income controller
+ * Income categories controller
  * 
  * PHP version 7.0
  */

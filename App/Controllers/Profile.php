@@ -112,29 +112,6 @@ class Profile extends Authenticated {
     }
 
     /**
-     * Show the new expense page
-     *
-     * @return void
-     */
-    public function newExpenseAction() {
-        View::renderTemplate('Profile/newExpense.html', ['user' => $this -> user, 'today' => $this -> todayDate, 'mode' => $this -> getUserMode()]);
-    }
-
-    /**
-     * Save the expense data
-     *
-     * @return void
-     */
-    public function saveExpenseAction() {
-        Expense::saveExpense($_POST);
-
-        Flash::addMessage('Pomyślnie dodano wydatek');
-
-        $this -> redirect('/profile/show');
-
-    }
-
-    /**
      * Show the balance sheet
      *
      * @return void
@@ -158,41 +135,12 @@ class Profile extends Authenticated {
     }
 
     /**
-     * Show the form for editing the user expenses categories
-     * 
-     * @return void
-     */
-    public function editExpensesCategoryAction() {
-        View::renderTemplate('Profile/editExpenses.html', ['user' => $this -> user, 'mode' => $this -> getUserMode()]);
-    }
-
-    /**
      * Show the form for editing the user payment methods
      * 
      * @return void
      */
     public function editPaymentMethodsAction() {
         View::renderTemplate('Profile/editPayment.html', ['user' => $this -> user, 'mode' => $this -> getUserMode()]);
-    }
-
-    /**
-     * Update selected category
-     * 
-     * @return void
-     */
-    public function updateCategoryAction() {
-        if ($_POST['type'] == 'expense') {
-            if (ExpenseCategories::editCategory($_POST, $this -> user -> id)) {
-                Flash::addMessage('Pomyślnie zapisano zmianę nazwy kategorii');
-                $this -> redirect('/profile/editExpensesCategory');
-            } else {
-                Flash::addMessage('Nie udało się zapisać zmiany', FLASH::WARNING);
-                $this -> redirect('/profile/editExpensesCategory');
-            }
-        } else {
-            Flash::addMessage('Coś poszło nie tak');
-            $this -> redirect('/profile/show');
-        }
     }
 
     /**
@@ -215,26 +163,6 @@ class Profile extends Authenticated {
         }
     }
 
-     /**
-     * Delete selected category
-     * 
-     * @return void
-     */
-    public function deleteCategoryAction() {
-        if ($_POST['type'] == 'expense') {
-            if (ExpenseCategories::deleteCategory($_POST, $this -> user -> id)) {
-                Flash::addMessage('Pomyślnie usunięto kategorię');
-                $this -> redirect('/profile/editExpensesCategory');
-            } else {
-                Flash::addMessage('Nie udało się usunąć wybranej kategorii', FLASH::WARNING);
-                $this -> redirect('/profile/editExpensesCategory');
-            }
-        } else {
-            Flash::addMessage('Coś poszło nie tak', FLASH::WARNING);
-            $this -> redirect('/profile/show');
-        }
-    }
-
     /**
      * Delete selected payment method
      * 
@@ -248,26 +176,6 @@ class Profile extends Authenticated {
             } else {
                 Flash::addMessage('Nie udało się usunąć wybranej kategorii', FLASH::WARNING);
                 $this -> redirect('/profile/editPaymentMethods');
-            }
-        } else {
-            Flash::addMessage('Coś poszło nie tak', FLASH::WARNING);
-            $this -> redirect('/profile/show');
-        }
-    }
-
-    /**
-     * Save new category
-     * 
-     * @return void
-     */
-    public function saveNewCategoryAction() {
-        if ($_POST['type'] == 'expense') {
-            if (ExpenseCategories::saveNewCategory($_POST, $this -> user -> id)) {
-                Flash::addMessage('Pomyślnie zapisano nową kategorię');
-                $this -> redirect('/profile/editExpensesCategory');
-            } else {
-                Flash::addMessage('Nie udało się zapisać zmian', FLASH::WARNING);
-                $this -> redirect('/profile/editExpensesCategory');
             }
         } else {
             Flash::addMessage('Coś poszło nie tak', FLASH::WARNING);

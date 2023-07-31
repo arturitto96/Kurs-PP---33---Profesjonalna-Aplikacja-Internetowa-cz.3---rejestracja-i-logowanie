@@ -42,9 +42,9 @@
         <div class="modal-header">
           <h1 class="modal-title fs-5 text-dark bg-white" id="exampleModalLabel">Dodawanie nowej kategorii</h1>
         </div>
-            <form action="/profile/saveNewCategory" method="post">
+            <form action="/ExpenseCategoriesController/saveNewCategory" method="post">
                 <div class="modal-body">
-                    <input name="type" type="hidden" value="expense" />
+                    <!-- <input name="type" type="hidden" value="expense" /> -->
                     <p class="text-dark bg-white">Podaj nazwę nowej kategorii:</p>
                     <input name="newCategoryName" type="text" class="form-control my-input" placeholder="Nazwa nowej kategorii" required>
                     <p class="text-dark bg-white">Czy dla nowej kategorii dodać limit wydatków?</p>
@@ -67,9 +67,9 @@
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">Zmiana nazwy kategorii</h1>
         </div>
-            <form action="/profile/updateCategory" method="post">
+            <form action="/ExpenseCategoriesController/updateCategory" method="post">
                 <div class="modal-body">
-                    <input name="type" type="hidden" value="expense" />
+                    <!-- <input name="type" type="hidden" value="expense" /> -->
                     <input id="hiddenInput" name="oldCategoryName" type="hidden" />
                     <p>Wybrałeś do edycji kategorię <span id="selectedCategoryName"></span>.</p>
                     <p>Podaj nową nazwę dla wybranej kategorii:</p>
@@ -96,9 +96,9 @@
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">Usunięcie kategorii</h1>
         </div>
-            <form action="/profile/deleteCategory" method="post">
+            <form action="/ExpenseCategoriesController/deleteCategory" method="post">
                 <div class="modal-body">
-                    <input name="type" type="hidden" value="expense" />
+                    <!-- <input name="type" type="hidden" value="expense" /> -->
                     <input id="hiddenInput" name="deleteCategory" type="hidden" />
                     <p>Wybrałeś do usunięcia kategorię <span id="selectedCategoryName"></span>. Wybierz nazwę kategorii, którą przypisać do już dodanych wydatków:</p>
                     <select name="newCategory" class="form-select editCategoryInput" placeholder="Kategoria" required>
