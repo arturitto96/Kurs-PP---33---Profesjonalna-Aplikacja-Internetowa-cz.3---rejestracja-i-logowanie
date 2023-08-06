@@ -5,29 +5,49 @@
 {% block actionArea %}
 <!-- Setup data for edit Section -->
 <div class="actionArea">
-    <div class="setupDataBox {{mode}}Mode">
+    <div class="editDataBox {{mode}}Mode">
         <h5>Edycja metod płatności dla wydatków</h5>
-        <button class="btn btn-light btn-delete {{mode}}Mode" type="button" data-bs-toggle="modal" data-bs-target="#newModal">Nowa metoda płatności</button>
-        <button class="btn btn-light btn-delete {{mode}}Mode" type="button" data-bs-toggle="modal" data-bs-target="#editModal">Edytuj metodę płatności</button>
-        <button class="btn btn-light btn-delete {{mode}}Mode" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal">Usuń metodę płatności</button>
+        <button class="btn btn-light btn-delete {{mode}}Mode" type="button" data-bs-toggle="modal" data-bs-target="#newModal">Nowa metoda</button>
+        <select id="methodName" class="form-select editCategoryInput" required>
+            <option>Wybierz metodę</option>
+            {% if user.paymentMethods is not empty %}
+                {% for payments in user.paymentMethods %}
+                    {% for payment in payments %}
+                        <option value='{{ payment }}'>{{ payment }}</option>
+                    {% endfor %}
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </select>
+    </div>
+    <div id="selectedMethodCard">
+        <div class="editDataBox {{mode}}Mode">
+            <a class="deleteCategoryBtn" role="button" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                <i class="fa-solid fa-circle-xmark fa-xl"></i>
+            </a>
+            <h5><i id="selectedPaymentName">"Wybierz kategorię"</i></h5>
+            <button class="btn btn-outline-warning editCategoryBtn" type="button" data-bs-toggle="modal" data-bs-target="#editModal">Edytuj</button>
+        </div>
     </div>
 </div>
+
+
 
 <!-- Modal new payment -->
 <div class="modal fade" id="newModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
+      <div class="modal-content {{mode}}Mode">
         <div class="modal-header">
-          <h1 class="modal-title fs-5 text-dark bg-white" id="exampleModalLabel">Dodawanie nowej metody płatności</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Dodawanie nowej metody płatności</h1>
         </div>
             <form action="/ExpensePaymentMethodsController/saveNewPayment" method="post">
                 <div class="modal-body">
-                    <p class="text-dark bg-white">Podaj nazwę nowej metody płatności:</p>
-                    <input name="newPaymentName" type="text" class="form-control my-input" placeholder="Nazwa nowej metody płatności" required>
+                    <p>Podaj nazwę nowej metody płatności:</p>
+                    <input name="newPaymentName" type="text" class="form-control editCategoryInput" placeholder="Nazwa nowej metody płatności" required>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Zatwierdź</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Anuluj</button>
+                    <button type="submit" class="btn btn-outline-success">Zatwierdź</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Anuluj</button>
                 </div>
             </form>
       </div>
@@ -37,29 +57,19 @@
 <!-- Modal edit payment -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
+      <div class="modal-content {{mode}}Mode">
         <div class="modal-header">
-          <h1 class="modal-title fs-5 text-dark bg-white" id="exampleModalLabel">Zmiana nazwy metody płatności</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Zmiana nazwy metody płatności</h1>
         </div>
             <form action="/ExpensePaymentMethodsController/saveNewPaymentName" method="post">
                 <div class="modal-body">
-                    <p class="text-dark bg-white">Wybierz nazwę metody, którą chcesz edytować:</p>
-                    <select name="oldPaymentName" class="form-select my-input" placeholder="Kategoria" required>
-                        {% if user.paymentMethods is not empty %}
-                                {% for payments in user.paymentMethods %}
-                                    {% for payment in payments %}
-                                        <option value='{{ payment }}'>{{ payment }}</option>
-                                    {% endfor %}
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </select>
-                    <p class="text-dark bg-white">Podaj nową nazwę metody:</p>
-                    <input name="newPaymentName" type="text" class="form-control my-input" placeholder="Nowa nazwa metody płatności" required>
+                    <p>Wybrałeś do edycji metodę <span id="selectedPaymentName"></span>. Podaj nową nazwę dla wybranej kategorii:</p>
+                    <input id="hiddenInput" name="oldPaymentName" type="hidden" />
+                    <input name="newPaymentName" type="text" class="form-control editCategoryInput" placeholder="Nowa nazwa metody" required>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Zatwierdź</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Anuluj</button>
+                    <button type="submit" class="btn btn-outline-success">Zatwierdź</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Anuluj</button>
                 </div>
             </form>
       </div>
@@ -69,41 +79,29 @@
 <!-- Modal delete payment -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
+      <div class="modal-content {{mode}}Mode">
         <div class="modal-header">
-          <h1 class="modal-title fs-5 text-dark bg-white" id="exampleModalLabel">Usunięcie metody płatności</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Usunięcie metody płatności</h1>
         </div>
-            <form action="/ExpensePaymentMethodsController/deletePayment" method="post">
-                <div class="modal-body">
-                    <p class="text-dark bg-white">Wybierz nazwę kategorii, którą chcesz usunąć:</p>
-                    <select name="deletePayment" class="form-select my-input" placeholder="Metoda płatności" required>
-                        {% if user.paymentMethods is not empty %}
-                                {% for payments in user.paymentMethods %}
-                                    {% for payment in payments %}
-                                        <option value='{{ payment }}'>{{ payment }}</option>
-                                    {% endfor %}
+        <form action="/ExpensePaymentMethodsController/deletePayment" method="post">
+            <div class="modal-body">
+                <p>Wybrałeś do usunięcia metodę <span id="selectedPaymentName"></span>. Wybierz nazwę metody płatności, którą przypisać do już dodanych wydatków:</p>
+                <input id="hiddenInput" name="deletePayment" type="hidden" />
+                <select name="newPayment" class="form-select editCategoryInput" placeholder="Metoda płatności" required>
+                    {% if user.paymentMethods is not empty %}
+                            {% for payments in user.paymentMethods %}
+                                {% for payment in payments %}
+                                    <option value='{{ payment }}'>{{ payment }}</option>
                                 {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </select>
-                    <p class="text-dark bg-white">Wybierz nazwę kategorii, którą przypisać do już dodanych wydatków:</p>
-                    <select name="newPayment" class="form-select my-input" placeholder="Metoda płatności" required>
-                        {% if user.paymentMethods is not empty %}
-                                {% for payments in user.paymentMethods %}
-                                    {% for payment in payments %}
-                                        <option value='{{ payment }}'>{{ payment }}</option>
-                                    {% endfor %}
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </select>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Zatwierdź</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Anuluj</button>
-                </div>
-            </form>
-      </div>
+                            {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-success">Zatwierdź</button>
+                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Anuluj</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -117,4 +115,8 @@
     </ul>
 </div>
 {% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script src="/js/editExpensePaymentMethods.js"></script>
 {% endblock %}

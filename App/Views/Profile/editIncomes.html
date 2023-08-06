@@ -39,7 +39,6 @@
         </div>
             <form action="/IncomeCategoriesController/saveNewCategory" method="post">
                 <div class="modal-body">
-                    <!-- <input name="type" type="hidden" value="income" /> -->
                     <p>Podaj nazwę nowej kategorii:</p>
                     <input name="newCategoryName" type="text" class="form-control editCategoryInput" placeholder="Nazwa nowej kategorii" required>
                 </div>
@@ -61,7 +60,6 @@
         </div>
             <form action="/IncomeCategoriesController/updateCategory" method="post">
                 <div class="modal-body">
-                    <!-- <input name="type" type="hidden" value="income" /> -->
                     <p>Wybrałeś do edycji kategorię <span id="selectedCategoryName"></span>. Podaj nową nazwę dla wybranej kategorii:</p>
                     <input id="hiddenInput" name="oldCategoryName" type="hidden" />
                     <input name="newCategoryName" type="text" class="form-control editCategoryInput" placeholder="Nowa nazwa kategorii" required>
@@ -85,7 +83,6 @@
             <form action="/IncomeCategoriesController/deleteCategory" method="post">
                 <div class="modal-body">
                     <p>Wybrałeś do usunięcia kategorię <span id="selectedCategoryName"></span>. Wybierz nazwę kategorii, którą przypisać do już dodanych przychodów:</p>
-                    <input name="type" type="hidden" value="income" />
                     <input id="hiddenInput" name="deleteCategory" type="hidden" />
                     <select name="newCategory" class="form-select editCategoryInput" placeholder="Kategoria" required>
                         {% if user.incomesCategories is not empty %}
