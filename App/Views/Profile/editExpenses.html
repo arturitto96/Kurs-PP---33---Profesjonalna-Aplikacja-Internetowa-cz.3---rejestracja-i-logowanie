@@ -38,22 +38,22 @@
 <!-- Modal new expense -->
 <div class="modal fade" id="newModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
+      <div class="modal-content {{mode}}Mode">
         <div class="modal-header">
-          <h1 class="modal-title fs-5 text-dark bg-white" id="exampleModalLabel">Dodawanie nowej kategorii</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Dodawanie nowej kategorii</h1>
         </div>
             <form action="/ExpenseCategoriesController/saveNewCategory" method="post">
                 <div class="modal-body">
                     <!-- <input name="type" type="hidden" value="expense" /> -->
-                    <p class="text-dark bg-white">Podaj nazwę nowej kategorii:</p>
+                    <p>Podaj nazwę nowej kategorii:</p>
                     <input name="newCategoryName" type="text" class="form-control my-input" placeholder="Nazwa nowej kategorii" required>
-                    <p class="text-dark bg-white">Czy dla nowej kategorii dodać limit wydatków?</p>
+                    <p>Czy dla nowej kategorii dodać limit wydatków?</p>
                     <input name="category_limit" type="number" class="form-control my-input" placeholder="Kwota limitu" min="0" step="0.01">
-                    <p class="text-dark bg-white"><i>W przypadku gdy nie chcesz dodawać limitu, pozostaw to pole puste.</i></p>
+                    <p><i>W przypadku gdy nie chcesz dodawać limitu, pozostaw to pole puste.</i></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Zatwierdź</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Anuluj</button>
+                    <button type="submit" class="btn btn-outline-success">Zatwierdź</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Anuluj</button>
                 </div>
             </form>
       </div>
