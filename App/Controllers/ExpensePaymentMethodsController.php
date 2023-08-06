@@ -14,12 +14,6 @@ use \App\Models\ExpensePaymentMethods;
  * PHP version 7.0
  */
 class ExpensePaymentMethodsController extends Profile {
-
-    private $user;
-
-    private $todayDate;
-
-    private $firstDate;
         
     /**
      * Before filter - called before each action method

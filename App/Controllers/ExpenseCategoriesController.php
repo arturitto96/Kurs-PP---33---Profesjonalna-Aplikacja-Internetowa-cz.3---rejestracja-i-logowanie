@@ -14,10 +14,6 @@ use \App\Models\ExpenseCategories;
  */
 class ExpenseCategoriesController extends Profile {
 
-    private $user;
-
-    private $todayDate;
-
     /**
      * Before filter - called before each action method
      * 
