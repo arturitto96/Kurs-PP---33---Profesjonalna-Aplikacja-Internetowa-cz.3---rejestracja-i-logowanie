@@ -13,8 +13,16 @@
                 {% endfor %}
             </div>
             <form class="loginSection" action="/login/create" method="post" class="d-flex" >
-                <input name="email" type="email" class="form-control navbarInput" placeholder="e-mail" value="{{ email }}" required>
-                <input name="password" type="password" class="form-control navbarInput" placeholder="hasło" required>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-at"></i></span>
+                    <input name="email" type="email" class="form-control loginInput" placeholder="e-mail" value="{{ email }}" required>
+                </div>
+                <div class="input-group">
+                    <span id="navbarPasswordBtn" class="input-group-text" onclick="hideShowPassword()"><i class="fa-solid fa-eye"></i></span>
+                    <input id="navbarPassworInput" name="password" type="password" class="form-control loginInput" placeholder="hasło" required>
+                </div>
+                <!-- <input name="email" type="email" class="form-control loginInput" placeholder="e-mail" value="{{ email }}" required> -->
+                <!-- <input name="password" type="password" class="form-control loginInput" placeholder="hasło" required> -->
                 <button class="btn btn-outline-success navbarBtn" type="submit">Zaloguj</button>
                 <a class="btn btn-outline-light forgotBtn" href="/password/forgot" role="button">Zapomniałeś hasła?</a>
             </form>
@@ -23,8 +31,14 @@
             </a>
             <div class="collapse navbar-collapse hamburgerMenuIndex" id="collapseExample">
                 <form action="/login/create" method="post">
-                    <input name="email" type="email" class="form-control hamburgerMenuInput" placeholder="e-mail" value="{{ email }}" required>
-                    <input name="password" type="password" class="form-control hamburgerMenuInput" placeholder="hasło" required>
+                    <div class="input-group hamburgerMenuInputGroup">
+                        <span class="input-group-text"><i class="fa-solid fa-at"></i></span>
+                        <input name="email" type="email" class="form-control hamburgerMenuInput" placeholder="e-mail" value="{{ email }}" required>
+                    </div>
+                    <div class="input-group hamburgerMenuInputGroup">
+                        <span id="hamburgerMenuPasswordBtn" class="input-group-text" onclick="hideShowPassword()"><i class="fa-solid fa-eye"></i></span>
+                        <input id="hamburgerMenuPassworInput" name="password" type="password" class="form-control hamburgerMenuInput" placeholder="hasło" required>
+                    </div>
                     <button class="btn btn-outline-success hamburgerMenuCollapseBtn" type="submit">Zaloguj</button>
                 </form>
                 <a class="btn btn-outline-light hamburgerMenuCollapseBtn" href="/password/forgot" role="button">Zapomniałeś hasła?</a>
@@ -94,4 +108,4 @@
             </section>
         </div>
     </div>
-    {% endblock %}
+{% endblock %}
