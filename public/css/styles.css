@@ -88,7 +88,7 @@ h2, h3, h4, h5 {
     color: #012918;
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 1028px) {
     .hamburgerMenuBtn {
         display: none;
     }
@@ -397,18 +397,27 @@ h2, h3, h4, h5 {
     }
 }
 
-.navbarInput {
+.loginSection .input-group {
+    display: inline-flex;
+    margin: auto;
+    width: auto;
+}
+
+.loginInput {
     margin-right: 5px;
     background-color: lightgrey;
     border: none;
-    display: inline-block;
+    display: inline-block; 
 }
 
 .hamburgerMenuInput {
-    width: 100%;
-    margin-top: 5px;
     background-color: lightgrey;
     border: none;
+}
+
+.hamburgerMenuInputGroup {
+    width: 100%;
+    margin-top: 5px;
 }
 
 .hamburgerMenuInput::-moz-focus-inner{
@@ -422,8 +431,7 @@ h2, h3, h4, h5 {
 }
 
 .infoSection .row {
-    margin-top: 60px;
-    margin-bottom: 40px;
+    margin: 60px 0 40px;
 }
 
 @media only screen and (min-width: 1028px) {
@@ -485,7 +493,7 @@ h2, h3, h4, h5 {
     margin: 10px auto;
 }
 
-.input-group {
+.setupRegisterDataBox .input-group {
     width: 90%;
     margin: auto;
 }

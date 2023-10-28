@@ -17,10 +17,6 @@ use \App\Controllers\ExpenseCategoriesController;
  */
 class CategoryLimitController extends Profile {
 
-    private $user;
-
-    private $todayDate;
-
     /**
      * Before filter - called before each action method
      * 

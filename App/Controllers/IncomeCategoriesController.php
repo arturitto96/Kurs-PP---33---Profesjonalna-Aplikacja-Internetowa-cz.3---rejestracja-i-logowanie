@@ -14,8 +14,6 @@ use \App\Models\IncomeCategories;
  */
 class IncomeCategoriesController extends Profile {
 
-    private $user;
-
     /**
      * Before filter - called before each action method
      * 

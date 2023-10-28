@@ -11,12 +11,7 @@ use \App\SupplementaryMethods;
  * 
  * PHP version 7.0
  */
-class Summary extends Profile { 
-    private $user;
-
-    private $todayDate;
-
-    private $firstDate;
+class Summary extends Profile {
     
     public function before() {
         parent::before();

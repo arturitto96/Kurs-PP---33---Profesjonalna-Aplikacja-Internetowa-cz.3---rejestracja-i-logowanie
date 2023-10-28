@@ -20,19 +20,19 @@ use \App\Models\CategoryLimit;
  */
 class Profile extends Authenticated {
 
-    private $user;
+    protected $user;
 
-    private $incomeSummary;
+    protected $incomeSummary;
 
-    private $expenceSummary;
+    protected $expenceSummary;
 
-    private $todayDate;
+    protected $todayDate;
 
-    private $firstDate;
+    protected $firstDate;
 
-    private $startDateForSummary;
+    protected $startDateForSummary;
 
-    private $endDateForSummary;
+    protected $endDateForSummary;
         
     /**
      * Before filter - called before each action method

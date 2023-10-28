@@ -44,14 +44,13 @@ const howMuchLeft = (limit, summary, enteredAmount) => {
     if(limit) {
         const limitCalculation = (Math.round((limit - summary - enteredAmount) * 100) / 100);
         if (limitCalculation >= 0) {
-            container
+            // container
             container.setAttribute("style", "color: #198754;");
         } else {
             container.setAttribute("style", "color: #dc3545;");
         }
         return `${limitCalculation} PLN`;
     } else {
-        container.setAttribute("style", "color: none;");
         return "ile chcesz";
     }
 }
@@ -60,9 +59,10 @@ const getResult = () => {
     if (categoryLimitState) {
         result.textContent = `Limit dla wybranej kategorii wynosi: ${categoryLimitValue} PLN oraz jest aktywny. Dotychczas w kategorii wydałeś: ${categorySummary} PLN. Możesz wydać jeszcze ${howMuchLeft(categoryLimitValue, categorySummary, enteredAmount)}.`;
     } else if (categoryLimitState == 0 && categoryLimitValue == null) {
+        container.removeAttribute("style");
         result.textContent = `Limit dla wybranej kategorii nie został zdefiniowany.`;
-
     } else {
+        container.removeAttribute("style");
         result.textContent = `Limit dla wybranej kategorii wynosi: ${categoryLimitValue} PLN, jednak nie jest aktywny. Możesz wydać jeszcze ile chcesz.`;
     }
 }
